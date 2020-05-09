@@ -1,46 +1,24 @@
 #include <iostream>
-#include "LinkedList.h"
+#include <stdbool.h>
+#include "AVLtree.h"
+#include <string>
+using std::string;
 
-int main() {
-    LinkedList<int> arik;
-    LinkedList<int>::Node a = arik.insertInPlace(arik.getHead(), 1);
-    LinkedList<int>::Node b = arik.insertInPlace(&a, 2);
-    LinkedList<int>::Node c = arik.insertInPlace(&b, 3);
-    std::cout << "Hello, World!" << std::endl;
+class Person {
+  string name;
+  int age;
+ public:
+  Person() : name(), age() {}
+  Person(string name, int age) : name(name), age(age) {}
+  Person(const Person &Old) : name(Old.name), age(Old.age) {}
+  friend std::ostream &operator<<(std::ostream &os, const Person &other);
+};
 
-
-    return 0;
+std::ostream &operator<<(std::ostream &os, const Person &other) {
+  os << other.age << " ";
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+int main() {
+  Person son("shlomi", 26);
+  return 0;
+}
