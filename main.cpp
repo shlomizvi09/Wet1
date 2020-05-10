@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdbool.h>
-#include "AVLtree.h"
+#include "AVLTree.h"
 #include <string>
 using std::string;
 
@@ -15,10 +15,13 @@ class Person {
 };
 
 std::ostream &operator<<(std::ostream &os, const Person &other) {
-  os << other.age << " ";
+  os << "name: " << other.name << "\n" << "age: " << other.age << " ";
 }
 
 int main() {
   Person son("shlomi", 26);
+  TreeNode<int, Person> Node = TreeNode<int, Person>(312425192, son);
+  Node.printKey();
+  Node.printData();
   return 0;
 }
