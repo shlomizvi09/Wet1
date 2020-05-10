@@ -19,6 +19,7 @@ class TreeNode {
   Key key;
   Data data;
   int height;
+  TreeNode *parent;
   TreeNode *rightSon; //  greater values
   TreeNode *leftSon;  //   smaller values
 
@@ -33,6 +34,7 @@ class TreeNode {
 
   const Key &getKey() const; // once created, the key is unchangeable
   Data &getData();
+  TreeNode *getParent() const;
   TreeNode *getRightSon() const;
   TreeNode *getLeftSon() const;
   const int getHeight() const; // may change only by setHeight
@@ -83,6 +85,10 @@ Data &TreeNode<Key, Data>::getData() {
   return this->data;
 }
 template<class Key, class Data>
+TreeNode<Key, Data> *TreeNode<Key, Data>::getParent() const {
+  return this->parent;
+}
+template<class Key, class Data>
 TreeNode<Key, Data> *TreeNode<Key, Data>::getRightSon() const {
   return this->rightSon;
 }
@@ -125,12 +131,13 @@ class AVLTree {
   void setRoot(TreeNode<Key, Data> *tree_node);
   void cleanTree(TreeNode<Key, Data> *tree_node);
 
-  // TODO: printers. by which order?
+  void printPreOrder(TreeNode<Key, Data> *tree_node) const;
+  void printInOrder(TreeNode<Key, Data> *tree_node) const;
+  void printPostOrder(TreeNode<Key, Data> *tree_node) const;
 
   AVLTreeResult updateData(const Key &key, Data &data);
   TreeNode<Key, Data> *findNodeInTree(const Key &key,
                                       TreeNode<Key, Data> *tree_node);
-  // TODO: need a "findParent" method ?
 
   int heightDifference(TreeNode<Key, Data> *tree_node);
   void swapBetweenNodes(TreeNode<Key, Data> *first_node,
@@ -159,6 +166,11 @@ void AVLTree<Key, Data>::cleanTree(TreeNode<Key, Data> *tree_node) {
   cleanTree(tree_node->rightSon);
   cleanTree(tree_node->leftSon);
   delete tree_node;
+}
+template<class Key, class Data>
+void AVLTree<Key, Data>::printPreOrder(TreeNode<Key, Data> *tree_node) const {
+  if (tree_node== nullptr) return;
+  //TODO : what are we suppose to print ? key? data?
 }
 template<class Key, class Data>
 AVLTreeResult AVLTree<Key, Data>::updateData(const Key &key, Data &data) {
