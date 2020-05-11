@@ -142,6 +142,17 @@ class AVLTree {
   int heightDifference(TreeNode<Key, Data> *tree_node);
   void swapBetweenNodes(TreeNode<Key, Data> *first_node,
                         TreeNode<Key, Data> *second_node);
+  void updateTreeNodeHeight(TreeNode<Key, Data> *tree_node);
+  TreeNode<Key, Data> *AVLTreeBalance(TreeNode<Key, Data> *tree_node);
+  TreeNode<Key, Data> *LLrotation(TreeNode<Key, Data> *parent,
+                                  TreeNode<Key, Data> *son);
+  TreeNode<Key, Data> *LRrotation(TreeNode<Key, Data> *parent,
+                                  TreeNode<Key, Data> *son);
+  TreeNode<Key, Data> *RLrotation(TreeNode<Key, Data> *parent,
+                                  TreeNode<Key, Data> *son);
+  TreeNode<Key, Data> *RRrotation(TreeNode<Key, Data> *parent,
+                                  TreeNode<Key, Data> *son);
+
 
 };
 
@@ -169,8 +180,24 @@ void AVLTree<Key, Data>::cleanTree(TreeNode<Key, Data> *tree_node) {
 }
 template<class Key, class Data>
 void AVLTree<Key, Data>::printPreOrder(TreeNode<Key, Data> *tree_node) const {
-  if (tree_node== nullptr) return;
-  //TODO : what are we suppose to print ? key? data?
+  if (tree_node == nullptr) return;
+  tree_node->printKey();
+  printPreOrder(tree_node->getLeftSon());
+  printPreOrder(tree_node->getRightSon());
+}
+template<class Key, class Data>
+void AVLTree<Key, Data>::printInOrder(TreeNode<Key, Data> *tree_node) const {
+  if (tree_node == nullptr) return;
+  printInOrder(tree_node->getLeftSon());
+  tree_node->printKey();
+  printInOrder(tree_node->getRightSon());
+}
+template<class Key, class Data>
+void AVLTree<Key, Data>::printPostOrder(TreeNode<Key, Data> *tree_node) const {
+  if (tree_node == nullptr) return;
+  printPostOrder(tree_node->getLeftSon());
+  printPostOrder(tree_node->getRightSon());
+  tree_node->printKey();
 }
 template<class Key, class Data>
 AVLTreeResult AVLTree<Key, Data>::updateData(const Key &key, Data &data) {
@@ -217,5 +244,18 @@ void AVLTree<Key, Data>::swapBetweenNodes(TreeNode<Key, Data> *first_node,
                                           TreeNode<Key, Data> *second_node) {
 
 }
+template<class Key, class Data>
+void AVLTree<Key, Data>::updateTreeNodeHeight(TreeNode<Key, Data> *tree_node) {
+  int left_height = EMPTY_HEIGHT, right_height = EMPTY_HEIGHT, new_height = 0;
+  if (tree_node->leftSon != nullptr) {
+    left_height = tree_node->leftSon->getHeight();
+  }
+  if (tree_node->rightSon != nullptr) {
+    right_height = tree_node->rightSon->getHeight();
+  }
+  new_height = (left_height > right_height) ? left_height : right_height;
+  tree_node->setHeight(new_height + 1);
+}
+
 
 #endif //WET1__AVLTREE_H_

@@ -18,10 +18,19 @@ std::ostream &operator<<(std::ostream &os, const Person &other) {
   os << "name: " << other.name << "\n" << "age: " << other.age << " ";
 }
 
+void func(int *&num) {
+  num++;
+}
+
 int main() {
-  Person son("shlomi", 26);
-  TreeNode<int, Person> Node = TreeNode<int, Person>(312425192, son);
-  Node.printKey();
-  Node.printData();
+  int x = 4;
+  int &y = x;
+  int *z = &y;
+
+  std::cout << "x= " << x << std::endl << "y= " << y << std::endl << "z= " << z
+            << std::endl;
+  func(z);
+  std::cout << "x= " << x << std::endl << "y= " << y << std::endl << "z= " << z
+            << std::endl;
   return 0;
 }
