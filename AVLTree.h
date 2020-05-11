@@ -153,6 +153,11 @@ class AVLTree {
   TreeNode<Key, Data> *RRrotation(TreeNode<Key, Data> *parent,
                                   TreeNode<Key, Data> *son);
 
+  AVLTreeResult internalAdd(TreeNode<Key, Data> *root,
+                            TreeNode<Key, Data> *new_node);
+  AVLTreeResult internalRemove(TreeNode<Key, Data> *tree_node, Key &key);
+  AVLTreeResult deleteTreeNode(TreeNode<Key, Data> **tree_node);
+  void deleteNodesWithTwoSons(TreeNode<Key, Data> *tree_node);
 
 };
 
@@ -242,7 +247,7 @@ int AVLTree<Key, Data>::heightDifference(TreeNode<Key, Data> *tree_node) {
 template<class Key, class Data>
 void AVLTree<Key, Data>::swapBetweenNodes(TreeNode<Key, Data> *first_node,
                                           TreeNode<Key, Data> *second_node) {
-
+  // TODO : Long complicated function, dont implement at night
 }
 template<class Key, class Data>
 void AVLTree<Key, Data>::updateTreeNodeHeight(TreeNode<Key, Data> *tree_node) {
@@ -256,6 +261,127 @@ void AVLTree<Key, Data>::updateTreeNodeHeight(TreeNode<Key, Data> *tree_node) {
   new_height = (left_height > right_height) ? left_height : right_height;
   tree_node->setHeight(new_height + 1);
 }
+template<class Key, class Data>
+TreeNode<Key, Data> *AVLTree<Key, Data>::AVLTreeBalance(TreeNode<Key,
+                                                                 Data> *tree_node) {
+  // now we need to sort the kind of imbalance, if exists
+  if (heightDifference(tree_node) == NOT_BALANCED_L) {
+    if (heightDifference(tree_node->leftSon) == BALANCED_L) {
+      return LRrotation(tree_node, tree_node->leftSon);
+    }
+    return LLrotation(tree_node, tree_node->leftSon);
+  }
+  if (heightDifference(tree_node) == NOT_BALANCED_R) {
+    if (heightDifference(tree_node->rightSon) == BALANCED_R) {
+      return RLrotation(tree_node, tree_node->rightSon);
+    }
+    return RRrotation(tree_node, tree_node->rightSon);
+  }
+  //the tree is balanced
+  return tree_node;
+}
+template<class Key, class Data>
+TreeNode<Key, Data> *AVLTree<Key, Data>::LLrotation(TreeNode<Key, Data> *parent,
+                                                    TreeNode<Key, Data> *son) {
+  parent->setLeftSon(son->rightSon);
+  son->setRightSon(parent);
+  updateTreeNodeHeight(parent);
+  updateTreeNodeHeight(son);
+  return son;
+}
+template<class Key, class Data>
+TreeNode<Key, Data> *AVLTree<Key, Data>::LRrotation(TreeNode<Key, Data> *parent,
+                                                    TreeNode<Key, Data> *son) {
+  parent->setLeftSon(RRrotation(son, son->rightSon));
+  return LLrotation(parent, parent->leftSon);
+}
+template<class Key, class Data>
+TreeNode<Key, Data> *AVLTree<Key, Data>::RLrotation(TreeNode<Key, Data> *parent,
+                                                    TreeNode<Key, Data> *son) {
+  parent->setRightSon(LLrotation(son->leftSon));
+  return RRrotation(parent, parent->rightSon);
+}
+template<class Key, class Data>
+TreeNode<Key, Data> *AVLTree<Key, Data>::RRrotation(TreeNode<Key, Data> *parent,
+                                                    TreeNode<Key, Data> *son) {
+  parent->setRightSon(son->leftSon);
+  son->setLeftSon(parent);
+  updateTreeNodeHeight(parent);
+  updateTreeNodeHeight(son);
+  return son;
+}
 
+template<class Key, class Data>
+AVLTreeResult AVLTree<Key, Data>::internalAdd(TreeNode<Key, Data> *root,
+                                              TreeNode<Key, Data> *new_node) {
+  Key root_key = root->key, new_node_key = new_node->key;
+  AVLTreeResult result = AVL_SUCCESS; //unless we'll find out otherwise...
+  if (root_key == new_node_key) {
+    return AVL_KeyAlreadyExists;
+  }
+  if (root_key > new_node_key) {
+    if (root->leftSon == nullptr) {
+      root->setLeftSon(new_node);
+      updateTreeNodeHeight(root);
+      return AVL_SUCCESS;
+    }
+    result = internalAdd(root->leftSon, new_node);
+    updateTreeNodeHeight(root);
+    root = AVLTreeBalance(root);
+    return result;
+  }
+  // if we got here, new_node_key must be greater than root_key
+  if (root->rightSon == nullptr) {
+    root->setRightSon(new_node);
+    updateTreeNodeHeight(root);
+    return AVL_SUCCESS;
+  }
+  result = internalAdd(root->rightSon, new_node);
+  updateTreeNodeHeight(root);
+  root = AVLTreeBalance(root);
+  return result;
+}
+template<class Key, class Data>
+AVLTreeResult AVLTree<Key, Data>::internalRemove(TreeNode<Key, Data> *tree_node,
+                                                 Key &key) {
+  if (tree_node == nullptr) return AVL_KeyNotFound;
+  Key curr_key = tree_node->key;
+  if (curr_key == key) {
+    deleteTreeNode(&tree_node);
+  } else if (curr_key > key) {
+    internalRemove(tree_node->leftSon, key);
+    updateTreeNodeHeight(tree_node);
+    tree_node = AVLTreeBalance(tree_node);
+  } else {
+    internalRemove(tree_node->rightSon, key);
+    updateTreeNodeHeight(tree_node);
+    tree_node = AVLTreeBalance(tree_node);
+  }
+  return AVL_SUCCESS;
+}
+
+template<class Key, class Data>
+AVLTreeResult AVLTree<Key, Data>::deleteTreeNode(TreeNode<Key,
+                                                          Data> **tree_node) {
+  TreeNode<Key, Data> *node_to_remove;
+  if (*(tree_node)->leftSon == nullptr && *(tree_node)->rightSon == nullptr) {
+    node_to_remove = *tree_node;
+    *tree_node = nullptr;
+    delete node_to_remove;
+  } else if (*(tree_node)->leftSon != nullptr
+      && *(tree_node)->rightSon == nullptr) {
+    node_to_remove = *tree_node;
+    *tree_node = *(tree_node)->leftSon;
+    delete node_to_remove;
+  } else if (*(tree_node)->leftSon == nullptr
+      && *(tree_node)->rightSon != nullptr) {
+    node_to_remove = *tree_node;
+    *tree_node = *(tree_node)->rightSon;
+    delete node_to_remove;
+  } else {
+    deleteNodesWithTwoSons(*tree_node);
+  }
+  return AVL_SUCCESS;
+}
 
 #endif //WET1__AVLTREE_H_
