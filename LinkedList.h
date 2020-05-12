@@ -29,8 +29,6 @@ public:
     public:
         Node(T data);
 
-        Node();
-
         ~Node() = default;
 
         T getData();
@@ -105,14 +103,6 @@ LinkedList<T>::Node::Node(T data) :data(data) {
     this->next = nullptr;
     this->prev = nullptr;
 }
-
-template<class T>
-LinkedList<T>::Node::Node() {
-    this->data = T();
-    this->next = nullptr;
-    this->prev = nullptr;
-}
-
 template<class T>
 T LinkedList<T>::Node::getData() {
     return this->data;
