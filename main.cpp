@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include "AVLTree.h"
 #include "LinkedList.h"
-#include "MusicManneger.h"
+#include "MusicManager.h"
 #include <string>
 
 using std::string;
