@@ -49,6 +49,7 @@ int main() {
     arik.printList();
     arik.deleteNode(node2);
     arik.printList();
+    arik.deleteNode(arik.getHead());
 
 
     return 0;

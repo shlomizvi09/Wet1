@@ -7,26 +7,36 @@
 
 #include <ostream>
 
+// Doubly linked list //
 template<class T>
 class LinkedList {
+
 public:
+    // generic node in the list //
     class ListNode;
 
+    // default constructor //
     LinkedList<T>();
 
+    // destructor //
     ~LinkedList<T>();
 
+    // return the head of the list //
     ListNode *getHead();
 
+    // return the tail of the list //
     ListNode *getTail();
 
+    // insert new node, next to current //
     ListNode *insertInPlace(ListNode *current, T data);
 
+    // insert new node to be the first node //
     ListNode *insertFirst(T data);
 
-
+    // remove node from the list //
     void deleteNode(ListNode *node);
 
+    // prints the data of all the node from head to tail //
     void printList();
 
     class ListNode {
@@ -34,24 +44,34 @@ public:
         ListNode *next;
         ListNode *prev;
     public:
+        // node constructor //
         ListNode(T data);
 
+        // default constructor //
         ListNode();
 
+        // destructor //
         ~ListNode() = default;
 
+        // returns the data contained in the node //
         T getData();
 
+        // returns the next node //
         ListNode *getNext() const;
 
+        // returns the previous node //
         ListNode *getPrev() const;
 
+        // removes the node //
         void removeNode();
 
+        // changes next node to be *next //
         void setNext(ListNode *next);
 
+        // changes previous node to be *prev //
         void setPrev(ListNode *prev);
 
+        // changes the data contained in the node //
         void changeData(T data);
     };
 
@@ -60,6 +80,7 @@ private:
     ListNode *tail;
 };
 
+/*        IMPLEMENTATION        */
 
 template<class T>
 LinkedList<T>::LinkedList() {
@@ -119,6 +140,8 @@ void LinkedList<T>::printList() {
 
 template<class T>
 void LinkedList<T>::deleteNode(LinkedList::ListNode *node) {
+    if (node == tail || node == head)
+        return;
     node->removeNode();
 
 }
