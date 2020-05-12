@@ -52,8 +52,7 @@ int main() {
     arik.printList();
     arik.deleteNode(arik.getHead());
 
-    AVLTree<int,FirstTreeNode> DS;
-    FirstTreeNode node5(3);
+
 
 
 
