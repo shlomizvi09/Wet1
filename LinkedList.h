@@ -10,52 +10,61 @@
 template<class T>
 class LinkedList {
 public:
-    class Node;
+    class ListNode;
 
     LinkedList<T>();
 
     ~LinkedList<T>();
 
-    Node *getHead();
+    ListNode *getHead();
 
-    Node *getTail();
+    ListNode *getTail();
 
-    Node insertInPlace(Node *node, T data);
+    ListNode *insertInPlace(ListNode *current, T data);
 
-    class Node {
+    ListNode *insertFirst(T data);
+
+
+    void deleteNode(ListNode *node);
+
+    void printList();
+
+    class ListNode {
         T data;
-        Node *next;
-        Node *prev;
+        ListNode *next;
+        ListNode *prev;
     public:
-        Node(T data);
+        ListNode(T data);
 
-        ~Node() = default;
+        ListNode();
+
+        ~ListNode() = default;
 
         T getData();
 
-        Node *getNext() const;
+        ListNode *getNext() const;
 
-        Node *getPrev() const;
+        ListNode *getPrev() const;
 
         void removeNode();
 
-        void setNext(Node *next);
+        void setNext(ListNode *next);
 
-        void setPrev(Node *prev);
+        void setPrev(ListNode *prev);
 
         void changeData(T data);
     };
 
 private:
-    Node *head;
-    Node *tail;
+    ListNode *head;
+    ListNode *tail;
 };
 
 
 template<class T>
 LinkedList<T>::LinkedList() {
-    this->head = new Node();
-    this->tail = new Node();
+    this->head = new ListNode();
+    this->tail = new ListNode();
     this->head->setNext(tail);
     this->head->setPrev(nullptr);
     this->tail->setNext(nullptr);
@@ -64,8 +73,8 @@ LinkedList<T>::LinkedList() {
 
 template<class T>
 LinkedList<T>::~LinkedList() {
-    Node *iterator = this->getHead()->getNext();
-    Node *tmp = iterator;
+    ListNode *iterator = this->getHead()->getNext();
+    ListNode *tmp = iterator;
     while (iterator != this->tail) {
         iterator = iterator->getNext();
         tmp->removeNode();
@@ -76,67 +85,104 @@ LinkedList<T>::~LinkedList() {
 }
 
 template<class T>
-typename LinkedList<T>::Node* LinkedList<T>::getHead() {
+typename LinkedList<T>::ListNode *LinkedList<T>::getHead() {
     return this->head;
 }
 
 template<class T>
-typename LinkedList<T>::Node* LinkedList<T>::getTail() {
+typename LinkedList<T>::ListNode *LinkedList<T>::getTail() {
     return this->tail;
 }
 
 template<class T>
-typename LinkedList<T>::Node
-LinkedList<T>::insertInPlace(LinkedList::Node *current, T
-data) {
-    Node *newNode = new Node(data);
+typename LinkedList<T>::ListNode *
+LinkedList<T>::insertInPlace(LinkedList::ListNode
+                             *current, T
+                             data) {
+    ListNode *newNode = new ListNode(data);
     newNode->setPrev(current);
     newNode->setNext(current->getNext());
     current->getNext()->setPrev(newNode);
     current->setNext(newNode);
-    return *newNode;
+    return newNode;
+}
+
+template<class T>
+void LinkedList<T>::printList() {
+    ListNode *iterator = this->head->getNext();
+    while (iterator->getNext()) {
+        std::cout << iterator->getData() << std::endl;
+        iterator = iterator->getNext();
+    }
+
+}
+
+template<class T>
+void LinkedList<T>::deleteNode(LinkedList::ListNode *node) {
+    node->removeNode();
+
+}
+
+template<class T>
+typename LinkedList<T>::ListNode *
+LinkedList<T>::insertFirst(T
+                           data) {
+    ListNode *newNode = new ListNode(data);
+    newNode->setPrev(this->head);
+    newNode->setNext(this->head->getNext());
+    newNode->getNext()->setPrev(newNode);
+    newNode->getPrev()->setNext(newNode);
+    return newNode;
 }
 
 
 template<class T>
-LinkedList<T>::Node::Node(T data) :data(data) {
+LinkedList<T>::ListNode::ListNode(T data) :data(data) {
     this->next = nullptr;
     this->prev = nullptr;
 }
+
 template<class T>
-T LinkedList<T>::Node::getData() {
+LinkedList<T>::ListNode::ListNode() {
+    this->data = T();
+    this->next = nullptr;
+    this->prev = nullptr;
+}
+
+template<class T>
+T LinkedList<T>::ListNode::getData() {
     return this->data;
 }
 
 template<class T>
-typename LinkedList<T>::Node *LinkedList<T>::Node::getNext() const {
+typename LinkedList<T>::ListNode *LinkedList<T>::ListNode::getNext() const {
     return this->next;
 }
 
 template<class T>
-typename LinkedList<T>::Node *LinkedList<T>::Node::getPrev() const {
+typename LinkedList<T>::ListNode *LinkedList<T>::ListNode::getPrev() const {
     return this->prev;
 }
 
 template<class T>
-void LinkedList<T>::Node::removeNode() {
+void LinkedList<T>::ListNode::removeNode() {
     this->getPrev()->setNext(this->getNext());
     this->getNext()->setPrev(this->getPrev());
     delete this;
 }
 
 template<class T>
-void LinkedList<T>::Node::setNext(LinkedList::Node *next) {
+void LinkedList<T>::ListNode::setNext(LinkedList::ListNode *next) {
     this->next = next;
 }
 
 template<class T>
-void LinkedList<T>::Node::setPrev(LinkedList::Node *prev) {
+void LinkedList<T>::ListNode::setPrev(LinkedList::ListNode *prev) {
     this->prev = prev;
 }
 
 template<class T>
-void LinkedList<T>::Node::changeData(T data) {
+void LinkedList<T>::ListNode::changeData(T data) {
     delete this->data;
     this->data = data;
 
