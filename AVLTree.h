@@ -205,6 +205,8 @@ class AVLTree {
   AVLTreeResult remove(Key &key);
 
   void print(AVLTreeOrderKind print_order) const;
+
+  TreeNode<Key, Data>* getSmallest();
 };
 
 /*        IMPLEMENTATION        */

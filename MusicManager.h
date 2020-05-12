@@ -2,13 +2,14 @@
 // Created by Arik on 12/05/2020.
 //
 
-#ifndef WET1_MUSICMANNEGER_H
-#define WET1_MUSICMANNEGER_H
+#ifndef WET1_MUSICMANAGER_H
+#define WET1_MUSICMANAGER_H
 
 #include "LinkedList.h"
 #include "AVLTree.h"
+#include "library1.h"
 
-class MusicManneger;
+class MusicManager;
 
 class PlayCountNode;
 
@@ -18,22 +19,41 @@ class SecondTreeNode;
 
 class ThirdTreeNode;
 
-class MusicManneger {
+// Music Manager struct //
+
+class MusicManager {
+public:
     AVLTree<int, FirstTreeNode> *Tree1;
     LinkedList<PlayCountNode> *PlayCountList;
     int TotalSongs;
-public:
-    MusicManneger() : TotalSongs(0) {
+
+    MusicManager() : TotalSongs(0) {
         Tree1 = new AVLTree<int, FirstTreeNode>;
         PlayCountList = new LinkedList<PlayCountNode>;
     }
 
-    ~MusicManneger(){
+    ~MusicManager() {
         delete Tree1;
         delete PlayCountList;
     }
 };
 
+// Music Manager functions //
+
+void *Init();
+
+StatusType AddArtist(void *DS, int artistID, int numOfSongs);
+
+StatusType RemoveArtist(void *DS, int artistID);
+
+StatusType AddToSongCount(void *DS, int artistID, int songID);
+
+StatusType NumberOfStreams(void *DS, int artistID, int songID, int *streams);
+
+StatusType GetRecommendedSongs(void *DS, int numOfSongs, int *artists, int
+*songs);
+
+void Quit(void **DS);
 
 
 class PlayCountNode {
@@ -60,6 +80,10 @@ public:
 
     bool operator==(const PlayCountNode *node) const {
         return (this->plays == node->plays);
+    }
+
+    bool operator!=(const PlayCountNode *node) const {
+        return (this->plays != node->plays);
     }
 };
 
@@ -128,4 +152,4 @@ public:
 };
 
 
-#endif //WET1_MUSICMANNEGER_H
+#endif //WET1_MUSICMANAGER_H
