@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "AVLTree.h"
 #include "LinkedList.h"
+#include "MusicManneger.h"
 #include <string>
 
 using std::string;
@@ -50,6 +51,15 @@ int main() {
     arik.deleteNode(node2);
     arik.printList();
     arik.deleteNode(arik.getHead());
+
+    AVLTree<int,FirstTreeNode> DS;
+    FirstTreeNode node5(3);
+
+
+
+
+
+
 
 
     return 0;
