@@ -8,6 +8,8 @@
 #include "LinkedList.h"
 #include "AVLTree.h"
 
+class MusicManneger;
+
 class PlayCountNode;
 
 class FirstTreeNode;
@@ -15,6 +17,23 @@ class FirstTreeNode;
 class SecondTreeNode;
 
 class ThirdTreeNode;
+
+class MusicManneger {
+    AVLTree<int, FirstTreeNode> *Tree1;
+    LinkedList<PlayCountNode> *PlayCountList;
+    int TotalSongs;
+public:
+    MusicManneger() : TotalSongs(0) {
+        Tree1 = new AVLTree<int, FirstTreeNode>;
+        PlayCountList = new LinkedList<PlayCountNode>;
+    }
+
+    ~MusicManneger(){
+        delete Tree1;
+        delete PlayCountList;
+    }
+};
+
 
 
 class PlayCountNode {
