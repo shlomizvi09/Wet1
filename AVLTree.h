@@ -445,4 +445,65 @@ AVLTreeResult AVLTree<Key, Data>::deleteTreeNode(TreeNode<Key,
   return AVL_SUCCESS;
 }
 
+/*
+ *      PRIVATE FUNCTIONS
+ */
+
+template<class Key, class Data>
+AVLTree<Key, Data>::AVLTree():root(nullptr) {}
+
+template<class Key, class Data>
+AVLTree<Key, Data>::~AVLTree() {
+  if (root != nullptr) {
+    cleanTree(root);
+  }
+}
+
+template<class Key, class Data>
+AVLTreeResult AVLTree<Key, Data>::add(Key key, Data data) {
+  TreeNode<Key, Data> *tree_node = new TreeNode<Key, Data>(key, data);
+  if (this->root == nullptr) {
+    this->root = tree_node;
+    return AVL_SUCCESS;
+  }
+  if (internalAdd(this->root, tree_node) == AVL_KeyAlreadyExists) {
+    delete tree_node;
+    return AVL_KeyAlreadyExists;
+  }
+  return AVL_SUCCESS;
+}
+
+template<class Key, class Data>
+AVLTreeResult AVLTree<Key, Data>::remove(Key &key) {
+  if (this->root == nullptr) {
+    return AVL_KeyNotFound;
+  }
+  return internalRemove(this->root, key);
+}
+
+template<class Key, class Data>
+AVLTreeResult AVLTree<Key, Data>::search(const Key &key, Data **data) {
+  TreeNode<Key, Data> *tree_node = findNodeInTree(key, this->root);
+  if (tree_node == nullptr) {
+    return AVL_KeyNotFound;
+  }
+  *data = &(tree_node->data);
+}
+
+template<class Key, class Data>
+void AVLTree<Key, Data>::print(AVLTreeOrderKind print_order) const {
+  if (print_order == Pre) {
+    printPreOrder(this->root);
+    return;
+  }
+  if (print_order == In) {
+    printInOrder(this->root);
+    return;
+  }
+  if (print_order == Post) {
+    printPostOrder(this->root);
+    return;
+  }
+}
+
 #endif //WET1__AVLTREE_H_
