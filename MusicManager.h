@@ -28,8 +28,8 @@ public:
     int TotalSongs;
 
     MusicManager() : TotalSongs(0) {
-        Tree1 = new AVLTree<int, FirstTreeNode>;
-        PlayCountList = new LinkedList<PlayCountNode>;
+        PlayCountList = new LinkedList<PlayCountNode>();
+        Tree1 = new AVLTree<int, FirstTreeNode>();
     }
 
     ~MusicManager() {
@@ -83,6 +83,10 @@ public:
         smallest=node;
     }
 
+    void ChangePlays(int plays){
+        this->plays=plays;
+    }
+
     bool operator==(const PlayCountNode *node) const {
         return (this->plays == node->plays);
     }
@@ -95,7 +99,7 @@ public:
 class FirstTreeNode {
 public:
     int numOfSongs;
-    LinkedList<PlayCountNode>::ListNode **songs;
+    PlayCountNode **songs;
 
     FirstTreeNode() {
         numOfSongs = 0;
@@ -103,16 +107,7 @@ public:
     }
 
     FirstTreeNode(int numOfSongs) : numOfSongs(numOfSongs) {
-        songs = new LinkedList<PlayCountNode>::ListNode *[numOfSongs];
-    }
-
-    FirstTreeNode(const FirstTreeNode &other) :
-            numOfSongs(other.numOfSongs) {
-        delete[] songs;
-        songs = new LinkedList<PlayCountNode>::ListNode *[numOfSongs];
-        for (int i = 0; i < numOfSongs; ++i) {
-            songs[i] = other.songs[i];
-        }
+        songs = new PlayCountNode*[numOfSongs];
     }
 
     ~FirstTreeNode() {
@@ -122,35 +117,31 @@ public:
 
 class SecondTreeNode {
 public:
-    LinkedList<struct PlayCountNode>::ListNode *originNode;
+    PlayCountNode *originNode;
     AVLTree<int, ThirdTreeNode> *songTree;
-    TreeNode<int, class ThirdTreeNode> *smallest;
+    TreeNode<int, ThirdTreeNode> *smallest;
 
     SecondTreeNode() : originNode(nullptr), songTree(nullptr),
                        smallest(nullptr) {};
 
-    SecondTreeNode(LinkedList<class PlayCountNode>::ListNode *origin,
-            AVLTree<int, ThirdTreeNode>
-    *songTree, TreeNode<int, class ThirdTreeNode> *smallest) : originNode
-    (origin),
-                                                                songTree(songTree),
-                                                                smallest(smallest) {};
 
     SecondTreeNode(const SecondTreeNode &other) : originNode(other.originNode),
                                                   songTree(other.songTree),
                                                   smallest(other.smallest) {};
 
     ~SecondTreeNode() = default;
+
+    void ChangeSmallest(TreeNode<int, ThirdTreeNode> *node) {
+        this->smallest = node;
+    }
 };
 
 
 class ThirdTreeNode {
 public:
-    SecondTreeNode *originArtist;
+    TreeNode<int, SecondTreeNode> *originArtist;
 
     ThirdTreeNode() : originArtist(nullptr) {};
-
-    ThirdTreeNode(SecondTreeNode *origin) : originArtist(origin) {};
 
     ThirdTreeNode(const ThirdTreeNode &other) : originArtist(
             other.originArtist) {};
