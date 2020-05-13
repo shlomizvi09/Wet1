@@ -5,7 +5,7 @@
 #ifndef WET1_LINKEDLIST_H
 #define WET1_LINKEDLIST_H
 
-#include <ostream>
+#include <iostream>
 
 // Doubly linked list //
 template<class T>
