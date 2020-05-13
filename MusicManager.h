@@ -60,10 +60,11 @@ class PlayCountNode {
 public:
     int plays;
     AVLTree<int, SecondTreeNode> *singerTree;
-    SecondTreeNode *smallest;
+    TreeNode<int, class SecondTreeNode> *smallest;
 
     PlayCountNode(int numOfPlays, AVLTree<int, SecondTreeNode> *singerTree,
-                  SecondTreeNode *smallest) : plays(numOfPlays), singerTree
+                  TreeNode<int, class SecondTreeNode> *smallest) : plays
+                  (numOfPlays), singerTree
             (singerTree), smallest(smallest) {};
 
     PlayCountNode(const PlayCountNode &other) : plays(other.plays),
@@ -78,6 +79,10 @@ public:
 
     ~PlayCountNode() = default;
 
+    void ChangeSmallest(TreeNode<int, class SecondTreeNode> *node){
+        smallest=node;
+    }
+
     bool operator==(const PlayCountNode *node) const {
         return (this->plays == node->plays);
     }
@@ -90,7 +95,7 @@ public:
 class FirstTreeNode {
 public:
     int numOfSongs;
-    PlayCountNode **songs;
+    LinkedList<PlayCountNode>::ListNode **songs;
 
     FirstTreeNode() {
         numOfSongs = 0;
@@ -98,13 +103,13 @@ public:
     }
 
     FirstTreeNode(int numOfSongs) : numOfSongs(numOfSongs) {
-        songs = new PlayCountNode *[numOfSongs];
+        songs = new LinkedList<PlayCountNode>::ListNode *[numOfSongs];
     }
 
     FirstTreeNode(const FirstTreeNode &other) :
             numOfSongs(other.numOfSongs) {
         delete[] songs;
-        songs = new PlayCountNode *[numOfSongs];
+        songs = new LinkedList<PlayCountNode>::ListNode *[numOfSongs];
         for (int i = 0; i < numOfSongs; ++i) {
             songs[i] = other.songs[i];
         }
@@ -117,17 +122,19 @@ public:
 
 class SecondTreeNode {
 public:
-    PlayCountNode *originNode;
+    LinkedList<struct PlayCountNode>::ListNode *originNode;
     AVLTree<int, ThirdTreeNode> *songTree;
-    ThirdTreeNode *smallest;
+    TreeNode<int, class ThirdTreeNode> *smallest;
 
     SecondTreeNode() : originNode(nullptr), songTree(nullptr),
                        smallest(nullptr) {};
 
-    SecondTreeNode(PlayCountNode *origin, AVLTree<int, ThirdTreeNode>
-    *songTree, ThirdTreeNode *smallest) : originNode(origin),
-                                          songTree(songTree),
-                                          smallest(smallest) {};
+    SecondTreeNode(LinkedList<class PlayCountNode>::ListNode *origin,
+            AVLTree<int, ThirdTreeNode>
+    *songTree, TreeNode<int, class ThirdTreeNode> *smallest) : originNode
+    (origin),
+                                                                songTree(songTree),
+                                                                smallest(smallest) {};
 
     SecondTreeNode(const SecondTreeNode &other) : originNode(other.originNode),
                                                   songTree(other.songTree),
