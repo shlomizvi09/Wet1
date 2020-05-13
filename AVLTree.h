@@ -590,6 +590,7 @@ AVLTreeResult AVLTree<Key, Data>::search(const Key &key, Data **data) {
     return AVL_KeyNotFound;
   }
   *data = &(tree_node->data);
+  return AVL_SUCCESS;
 }
 
 template<class Key, class Data>
