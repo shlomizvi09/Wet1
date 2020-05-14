@@ -248,7 +248,6 @@ void AVLTree<Key, Data>::cleanTree(TreeNode<Key, Data> *tree_node) {
   if (tree_node == nullptr) {
     return;
   }
-  TreeNode<Key, Data> *temp;
   cleanTree(tree_node->rightSon);
   cleanTree(tree_node->leftSon);
   tree_node->setParent(nullptr);

@@ -31,7 +31,39 @@ std::ostream &operator<<(std::ostream &os, const Person &other) {
   return os;
 }
 
+class Animal {
+  Person *owner;
+ public:
+  Animal(Person *owner) : owner(owner) {}
+  ~Animal() {
+
+  }
+  void printOwner();
+
+};
+
+void Animal::printOwner() {
+  std::cout << owner->name;
+}
+
 int main() {
-  AVLTree<int, Person> *new_tree = new AVLTree<int, Person>();
-  return 0;
+    void *mivne = Init();
+    MusicManager *ds = (MusicManager*)mivne;
+    AddArtist(mivne,3,10);
+    AddArtist(mivne,3,3);
+    AddArtist(mivne,2,13);
+    AddArtist(mivne,5,15);
+    AddArtist(mivne,6,1);
+    AddArtist(mivne,6,0);
+    AddArtist(mivne,4,100);
+    AddArtist(mivne,-5,100);
+    AddArtist(mivne,0,100);
+    AddArtist(mivne,55,10540);
+    AddArtist(mivne,4,-5);
+    AddArtist(mivne,1,0);
+
+
+    printf("great success");
+
+    return 0;
 }
