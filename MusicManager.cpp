@@ -69,11 +69,10 @@ void MusicManager::DeleteData(TreeNode<int, ThirdTreeNodeData *> *root) {
     if (root == nullptr) {
         return;
     }
-    DeleteData(root.);
-    DeleteData(root->leftSon);
+
 
 }
-}
+
 
 using std::bad_alloc;
 

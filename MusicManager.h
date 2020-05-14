@@ -31,8 +31,8 @@ class ThirdTreeNodeData;
 // Music Manager class //
 
 class MusicManager {
-    AVLTree<int, FirstTreeNodeData*> *Tree1;
-    LinkedList<PlayCountNodeData*> *PlayCountList;
+    AVLTree<int, FirstTreeNodeData *> *Tree1;
+    LinkedList<PlayCountNodeData *> *PlayCountList;
     int TotalSongs;
 
     friend class PlayCountNodeData;
@@ -42,18 +42,11 @@ class MusicManager {
     friend class SecondTreeNodeData;
 
     friend class ThirdTreeNodeData;
-  AVLTree<int, FirstTreeNodeData*> *Tree1;
-  LinkedList<PlayCountNodeData*> *PlayCountList;
-  int TotalSongs;
-  friend class PlayCountNodeData;
-  friend class FirstTreeNodeData;
-  friend class SecondTreeNodeData;
-  friend class ThirdTreeNodeData;
 
 public:
     MusicManager() : TotalSongs(0) {
-        PlayCountList = new LinkedList<PlayCountNodeData*>();
-        Tree1 = new AVLTree<int, FirstTreeNodeData*>();
+        PlayCountList = new LinkedList<PlayCountNodeData *>();
+        Tree1 = new AVLTree<int, FirstTreeNodeData *>();
     }
 
     ~MusicManager() {
@@ -65,25 +58,17 @@ public:
 
     MusicManagerResult RemoveArtist(int artistID);
 
-    static void DeleteTreeData(AVLTree<int,ThirdTreeNodeData*> *tree);
+    static void DeleteTreeData(AVLTree<int, ThirdTreeNodeData *> *tree);
 
-    static void DeleteData(TreeNode<int, ThirdTreeNodeData*> *root);
- public:
-  MusicManager() : TotalSongs(0) {
-    PlayCountList = new LinkedList<PlayCountNodeData*>();
-    Tree1 = new AVLTree<int, FirstTreeNodeData*>();
-  }
-  ~MusicManager() {
-    delete Tree1;
-    delete PlayCountList;
-  }
-  MusicManagerResult AddToSongCount(int artistID, int songID);
+    static void DeleteData(TreeNode<int, ThirdTreeNodeData *> *root);
+
+    MusicManagerResult AddToSongCount(int artistID, int songID);
 };
 
 class PlayCountNodeData {
     int plays;
-    AVLTree<int, SecondTreeNodeData*> *singerTree;
-    TreeNode<int, class SecondTreeNodeData*> *smallest;
+    AVLTree<int, SecondTreeNodeData *> *singerTree;
+    TreeNode<int, class SecondTreeNodeData *> *smallest;
 
     friend class MusicManager;
 
@@ -94,48 +79,28 @@ class PlayCountNodeData {
     friend class ThirdTreeNodeData;
 
 public:
-  int plays;
-  AVLTree<int, SecondTreeNodeData*> *singerTree;
-  TreeNode<int, class SecondTreeNodeData*> *smallest;
-  friend class MusicManager;
-  friend class FirstTreeNodeData;
-  friend class SecondTreeNodeData;
-  friend class ThirdTreeNodeData;
- public:
 
-  PlayCountNodeData(int numOfPlays,
-                    AVLTree<int, SecondTreeNodeData*> *singerTree,
-                    TreeNode<int, class SecondTreeNodeData*> *smallest) : plays
-                                                                             (numOfPlays),
-                                                                         singerTree
-                                                                             (singerTree),
-                                                                         smallest(
-                                                                             smallest) {};
     PlayCountNodeData(int numOfPlays,
-                      AVLTree<int, SecondTreeNodeData*> *singerTree,
-                      TreeNode<int, class SecondTreeNodeData*> *smallest) : plays
-                                                                                   (numOfPlays),
-                                                                           singerTree
-                                                                                   (singerTree),
-                                                                           smallest(
-                                                                                   smallest) {};
+                      AVLTree<int, SecondTreeNodeData *> *singerTree,
+                      TreeNode<int, class SecondTreeNodeData *> *smallest) : plays
+                                                                                     (numOfPlays),
+                                                                             singerTree
+                                                                                     (singerTree),
+                                                                             smallest(
+                                                                                     smallest) {};
 
-  /*PlayCountNodeData(const PlayCountNodeData &other) : plays(other.plays),
-                                                      singerTree(other.singerTree),
-                                                      smallest(other.smallest) {}*/
+    /*PlayCountNodeData(const PlayCountNodeData &other) : plays(other.plays),
+                                                        singerTree(other.singerTree),
+                                                        smallest(other.smallest) {}*/
+    PlayCountNodeData(int plays) : plays(plays), singerTree(nullptr), smallest(nullptr) {}
 
-  PlayCountNodeData() : plays(0), singerTree(nullptr), smallest(nullptr) {}
+    PlayCountNodeData() : plays(0), singerTree(nullptr), smallest(nullptr) {}
 
-  ~PlayCountNodeData() = default;
+    ~PlayCountNodeData() = default;
 
-  void ChangeSmallest(TreeNode<int, SecondTreeNodeData*> *node) {
-    smallest = node;
-  }
-    void ChangeSmallest(TreeNode<int, SecondTreeNodeData*> *node) {
+    void ChangeSmallest(TreeNode<int, SecondTreeNodeData *> *node) {
         smallest = node;
     }
-
-
 
     void ChangePlays(int plays) {
         this->plays = plays;
@@ -145,48 +110,42 @@ public:
         return (this->plays == node->plays);
     }
 
-  bool operator!=(const PlayCountNodeData *node) const {
-    return (this->plays != node->plays);
-  }
+    bool operator!=(const PlayCountNodeData *node) const {
+        return (this->plays != node->plays);
+    }
 };
 
 class FirstTreeNodeData {
-  int numOfSongs;
-  LinkedList<PlayCountNodeData*>::ListNode **songs;
-  friend class MusicManager;
-  friend class PlayCountNodeData;
-  friend class SecondTreeNodeData;
-  friend class ThirdTreeNodeData;
+    int numOfSongs;
+    LinkedList<PlayCountNodeData *>::ListNode **songs;
 
- public:
-  FirstTreeNodeData() {
-    numOfSongs = 0;
-    songs = nullptr;
-  }
+    friend class MusicManager;
 
-  FirstTreeNodeData(int numOfSongs) : numOfSongs(numOfSongs) {
-    songs = new LinkedList<PlayCountNodeData*>::ListNode *[numOfSongs];
-  }
-    FirstTreeNodeData(int numOfSongs) : numOfSongs(numOfSongs) {
-        songs = new LinkedList<PlayCountNodeData*>::ListNode *[numOfSongs];
+    friend class PlayCountNodeData;
+
+    friend class SecondTreeNodeData;
+
+    friend class ThirdTreeNodeData;
+
+public:
+    FirstTreeNodeData() {
+        numOfSongs = 0;
+        songs = nullptr;
     }
 
-  ~FirstTreeNodeData() {
-    delete[] songs;
-  }
+    FirstTreeNodeData(int numOfSongs) : numOfSongs(numOfSongs) {
+        songs = new LinkedList<PlayCountNodeData *>::ListNode *[numOfSongs];
+    }
+
+    ~FirstTreeNodeData() {
+        delete[] songs;
+    }
 };
 
 class SecondTreeNodeData {
-  LinkedList<PlayCountNodeData*>::ListNode *originNode;
-  AVLTree<int, ThirdTreeNodeData*> *songTree;
-  TreeNode<int, ThirdTreeNodeData*> *smallest;
-  friend class MusicManager;
-  friend class PlayCountNodeData;
-  friend class FirstTreeNodeData;
-  friend class ThirdTreeNodeData;
-    LinkedList<PlayCountNodeData*>::ListNode *originNode;
-    AVLTree<int, ThirdTreeNodeData*> *songTree;
-    TreeNode<int, ThirdTreeNodeData*> *smallest;
+    LinkedList<PlayCountNodeData *>::ListNode *originNode;
+    AVLTree<int, ThirdTreeNodeData *> *songTree;
+    TreeNode<int, ThirdTreeNodeData *> *smallest;
 
     friend class MusicManager;
 
@@ -196,45 +155,32 @@ class SecondTreeNodeData {
 
     friend class ThirdTreeNodeData;
 
- public:
-  SecondTreeNodeData() : originNode(nullptr), songTree(nullptr),
-                         smallest(nullptr) {};
+public:
+    SecondTreeNodeData() : originNode(nullptr), songTree(nullptr),
+                           smallest(nullptr) {};
 
-  SecondTreeNodeData(const SecondTreeNodeData &other)
-      : originNode(other.originNode),
-        songTree(other.songTree),
-        smallest(other.smallest) {};
+    SecondTreeNodeData(const SecondTreeNodeData &other)
+            : originNode(other.originNode),
+              songTree(other.songTree),
+              smallest(other.smallest) {};
 
-  SecondTreeNodeData(LinkedList<PlayCountNodeData*>::ListNode *originNode,
-                     AVLTree<int, ThirdTreeNodeData*> *songTree,
-                     TreeNode<int, ThirdTreeNodeData*> *smallest) : originNode(
-      originNode), songTree(songTree),
-                                                                   smallest(
-                                                                       smallest) {};
-    SecondTreeNodeData(LinkedList<PlayCountNodeData*>::ListNode *originNode,
-                       AVLTree<int, ThirdTreeNodeData*> *songTree,
-                       TreeNode<int, ThirdTreeNodeData*> *smallest) : originNode(
+    SecondTreeNodeData(LinkedList<PlayCountNodeData *>::ListNode *originNode,
+                       AVLTree<int, ThirdTreeNodeData *> *songTree,
+                       TreeNode<int, ThirdTreeNodeData *> *smallest) : originNode(
             originNode), songTree(songTree),
-                                                                     smallest(
-                                                                             smallest) {};
+                                                                       smallest(
+                                                                               smallest) {};
 
-  ~SecondTreeNodeData() = default;
+    ~SecondTreeNodeData() = default;
 
-  void ChangeSmallest(TreeNode<int, ThirdTreeNodeData*> *node) {
-    this->smallest = node;
-  }
-    void ChangeSmallest(TreeNode<int, ThirdTreeNodeData*> *node) {
+    void ChangeSmallest(TreeNode<int, ThirdTreeNodeData *> *node) {
         this->smallest = node;
     }
+
 };
 
 class ThirdTreeNodeData {
-  TreeNode<int, SecondTreeNodeData*> *originArtist;
-  friend class MusicManager;
-  friend class PlayCountNodeData;
-  friend class FirstTreeNodeData;
-  friend class SecondTreeNodeData;
-    TreeNode<int, SecondTreeNodeData*> *originArtist;
+    TreeNode<int, SecondTreeNodeData *> *originArtist;
 
     friend class MusicManager;
 
@@ -244,18 +190,17 @@ class ThirdTreeNodeData {
 
     friend class SecondTreeNodeData;
 
- public:
-  ThirdTreeNodeData() : originArtist(nullptr) {};
+public:
+    ThirdTreeNodeData() : originArtist(nullptr) {};
 
-  ThirdTreeNodeData(TreeNode<int, SecondTreeNodeData*> *origin) : originArtist(
-      origin) {};
-    ThirdTreeNodeData(TreeNode<int, SecondTreeNodeData*> *origin) : originArtist(
+    ThirdTreeNodeData(TreeNode<int, SecondTreeNodeData *> *origin) : originArtist(
             origin) {};
 
-  ThirdTreeNodeData(const ThirdTreeNodeData &other) : originArtist(
-      other.originArtist) {};
 
-  ~ThirdTreeNodeData() = default;
+    ThirdTreeNodeData(const ThirdTreeNodeData &other) : originArtist(
+            other.originArtist) {};
+
+    ~ThirdTreeNodeData() = default;
 };
 
 /*LinkedList<PlayCountNodeData>::ListNode PlayCountNode;
