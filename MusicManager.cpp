@@ -37,7 +37,7 @@ MusicManagerResult MusicManager::AddArtist(int artistID, int numOfSongs) {
         tree3->add(i, dataTypeThree);
     }
     dataTypeTwo->songTree = tree3;
-    dataTypeTwo->ChangeSmallest(dataTypeTwo->songTree->getSmallest());
+    dataTypeTwo->UpdateSmallest();
     dataTypeTwo->originNode = this->PlayCountList->getFirst();
     for (int j = 0; j < numOfSongs; ++j) {
         node1->songs[j] = this->PlayCountList->getFirst();
@@ -47,30 +47,33 @@ MusicManagerResult MusicManager::AddArtist(int artistID, int numOfSongs) {
 }
 
 MusicManagerResult MusicManager::RemoveArtist(int artistID) {
-    TreeNode<int, FirstTreeNodeData *> *node1 = new TreeNode<int, FirstTreeNodeData *>();
-    if (this->Tree1->searchNode(artistID, &node1) == AVL_SUCCESS) {
-        return MM_EXISTS;
+    TreeNode<int, FirstTreeNodeData *> *node1 = nullptr;
+    if (this->Tree1->searchNode(artistID, &node1) == AVL_KeyNotFound) {
+        return MM_NOT_EXISTS;
     }
     for (int i = 0; i < node1->getData()->numOfSongs; ++i) {
-        if (node1->getData()->songs[i] == nullptr)
+        TreeNode<int, SecondTreeNodeData *> *node2 = nullptr;
+        node1->getData()->songs[i]->getData()->singerTree->searchNode
+                (artistID, &node2);
+        if (node2 == nullptr)
             continue;
-
-
+        this->DeleteData(node2->getData()->songTree->getRoot());
+        node2->getData()->songTree->cleanTree(node2->getData()->songTree->getRoot());
+        delete node2->getData();
+        node1->getData()->songs[i]->getData()->singerTree->remove(artistID);
     }
-
+    delete node1->getData();
+    this->Tree1->remove(artistID);
+    return MM_SUCCESS;
 }
-
- void MusicManager::DeleteTreeData(AVLTree<int,ThirdTreeNodeData*> *tree) {
-     TreeNode<int, ThirdTreeNodeData*> *root = tree->getRoot();
-
- }
 
 void MusicManager::DeleteData(TreeNode<int, ThirdTreeNodeData *> *root) {
     if (root == nullptr) {
         return;
     }
-
-
+    DeleteData(root->getRightSon());
+    DeleteData(root->getLeftSon());
+    delete root->getData();
 }
 
 
