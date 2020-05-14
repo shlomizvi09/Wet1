@@ -80,16 +80,19 @@ class TreeNode {
 
 template<class Key, class Data>
 void TreeNode<Key, Data>::setParent(TreeNode<Key, Data> *new_parent) {
+  if (this == nullptr) return;
   this->parent = new_parent;
 }
 
 template<class Key, class Data>
 void TreeNode<Key, Data>::setRightSon(TreeNode<Key, Data> *son) {
+  if (this == nullptr) return;
   this->rightSon = son;
 }
 
 template<class Key, class Data>
 void TreeNode<Key, Data>::setLeftSon(TreeNode<Key, Data> *son) {
+  if (this == nullptr) return;
   this->leftSon = son;
 }
 
@@ -166,8 +169,6 @@ class AVLTree {
 
   void setRoot(TreeNode<Key, Data> *tree_node);
 
-  void cleanTree(TreeNode<Key, Data> *tree_node);
-
   void printPreOrder(TreeNode<Key, Data> *tree_node) const;
 
   void printInOrder(TreeNode<Key, Data> *tree_node) const;
@@ -203,7 +204,7 @@ class AVLTree {
   AVLTreeResult internalAdd(TreeNode<Key, Data> **root,
                             TreeNode<Key, Data> *new_node);
 
-  AVLTreeResult internalRemove(TreeNode<Key, Data> *tree_node, Key &key);
+  AVLTreeResult internalRemove(TreeNode<Key, Data> **tree_node, Key &key);
 
   AVLTreeResult deleteTreeNode(TreeNode<Key, Data> **tree_node);
 
@@ -212,15 +213,21 @@ class AVLTree {
   AVLTree();
   ~AVLTree();
 
-  AVLTreeResult search(const Key &key, Data **data);
+  AVLTreeResult searchData(const Key &key, Data **data);
+
+  AVLTreeResult searchNode(const Key &key, TreeNode<Key, Data> **node);
 
   AVLTreeResult add(Key key, Data data);
 
   AVLTreeResult remove(Key &key);
 
+  void cleanTree(TreeNode<Key, Data> *tree_node);
+
   void print(AVLTreeOrderKind print_order) const;
 
   TreeNode<Key, Data> *getSmallest();
+
+  TreeNode<Key, Data> *getRoot();
 };
 
 /*        IMPLEMENTATION        */
@@ -242,9 +249,14 @@ void AVLTree<Key, Data>::cleanTree(TreeNode<Key, Data> *tree_node) {
   if (tree_node == nullptr) {
     return;
   }
+  TreeNode<Key, Data> *temp;
   cleanTree(tree_node->rightSon);
   cleanTree(tree_node->leftSon);
+  tree_node->setParent(nullptr);
+  tree_node->setRightSon(nullptr);
+  tree_node->setLeftSon(nullptr);
   delete tree_node;
+  this->root = nullptr;
 }
 
 template<class Key, class Data>
@@ -320,56 +332,87 @@ void AVLTree<Key, Data>::swapBetweenNodes(TreeNode<Key, Data> *first_node,
   if (first_node == nullptr || second_node == nullptr) {
     return;
   }
-  TreeNode<Key, Data> *temp_node1 = new TreeNode<Key, Data>(*first_node);
-  TreeNode<Key, Data> *temp_node2 = new TreeNode<Key, Data>(*second_node);
+  TreeNode<Key, Data> *temp_node1;
+  TreeNode<Key, Data> *temp_node2;
+
+  // checking if the nodes are consecutive, and which one is first
+  if ((second_node->rightSon != nullptr
+      && second_node->rightSon->key == first_node->key)
+      || (second_node->leftSon != nullptr
+          && second_node->leftSon->key == first_node->key)) {
+    temp_node1 = first_node;
+    first_node = second_node;
+    second_node = temp_node1;
+  }
+  if (first_node->rightSon != nullptr
+      && first_node->rightSon->key == second_node->key) {
+    temp_node1 = first_node->parent;
+    first_node->parent = second_node;
+    second_node->parent = temp_node1;
+    temp_node1 = second_node->rightSon;
+    temp_node2 = second_node->leftSon;
+    second_node->rightSon = first_node;
+    second_node->leftSon = first_node->leftSon;
+    first_node->rightSon = temp_node1;
+    first_node->leftSon = temp_node2;
+  } else if (first_node->leftSon != nullptr
+      && first_node->leftSon->key == second_node->key) {
+    temp_node1 = first_node->parent;
+    first_node->parent = second_node;
+    second_node->parent = temp_node1;
+    temp_node1 = second_node->rightSon;
+    temp_node2 = second_node->leftSon;
+    second_node->rightSon = first_node->rightSon;
+    second_node->leftSon = first_node;
+    first_node->rightSon = temp_node1;
+    first_node->leftSon = temp_node2;
+  } else {
+    temp_node1 = first_node->parent;
+    first_node->setParent(second_node->parent);
+    second_node->setParent(temp_node1);
+    temp_node1 = first_node->rightSon;
+    temp_node2 = first_node->leftSon;
+    first_node->setRightSon(second_node->rightSon);
+    first_node->setLeftSon(second_node->leftSon);
+    second_node->setRightSon(temp_node1);
+    second_node->setLeftSon(temp_node2);
+  }
 
   if (first_node->rightSon != nullptr) {
-    first_node->rightSon->setParent(second_node);
+    first_node->rightSon->setParent(first_node);
   }
   if (first_node->leftSon != nullptr) {
-    first_node->leftSon->setParent(second_node);
+    first_node->leftSon->setParent(first_node);
   }
   if (second_node->rightSon != nullptr) {
-    second_node->rightSon->setParent(first_node);
+    second_node->rightSon->setParent(second_node);
   }
   if (second_node->leftSon != nullptr) {
-    second_node->leftSon->setParent(first_node);
+    second_node->leftSon->setParent(second_node);
   }
 
   if (first_node->parent != nullptr) {
-    if (first_node->parent->leftSon->key == first_node->key) {
-      first_node->parent->setLeftSon(second_node);
+    if (first_node->parent->leftSon->key == second_node->key) {
+      first_node->parent->setLeftSon(first_node);
     } else {
-      first_node->parent->setRightSon(second_node);
+      first_node->parent->setRightSon(first_node);
     }
   }
 
   if (second_node->parent != nullptr) {
-    if (second_node->parent->leftSon->key == second_node->key) {
-      second_node->parent->setLeftSon(first_node);
+    if (second_node->parent->leftSon->key == first_node->key) {
+      second_node->parent->setLeftSon(second_node);
     } else {
-      second_node->parent->setRightSon(first_node);
+      second_node->parent->setRightSon(second_node);
     }
   }
 
-  first_node->height = temp_node2->height;
-  first_node->parent = temp_node2->parent;
-  first_node->rightSon = temp_node2->rightSon;
-  first_node->leftSon = temp_node2->leftSon;
-
-  second_node->height = temp_node1->height;
-  second_node->parent = temp_node1->parent;
-  second_node->rightSon = temp_node1->rightSon;
-  second_node->leftSon = temp_node1->leftSon;
-
   if (this->root->key == first_node->key) {
-    this->setRoot(second_node);
-  } else if (this->root->key == second_node->key) {
     this->setRoot(first_node);
+  } else if (this->root->key == second_node->key) {
+    this->setRoot(second_node);
   }
 
-  delete temp_node1;
-  delete temp_node2;
 }
 
 template<class Key, class Data>
@@ -391,15 +434,19 @@ TreeNode<Key, Data> *AVLTree<Key, Data>::AVLTreeBalance(TreeNode<Key,
   // now we need to sort the kind of imbalance, if exists
   if (heightDifference(tree_node) == NOT_BALANCED_L) {
     if (heightDifference(tree_node->leftSon) == BALANCED_L) {
-      return LRrotation(tree_node, tree_node->leftSon);
+      tree_node = LRrotation(tree_node, tree_node->leftSon);
+      return tree_node;
     }
-    return LLrotation(tree_node, tree_node->leftSon);
+    tree_node = LLrotation(tree_node, tree_node->leftSon);
+    return tree_node;
   }
   if (heightDifference(tree_node) == NOT_BALANCED_R) {
     if (heightDifference(tree_node->rightSon) == BALANCED_R) {
-      return RLrotation(tree_node, tree_node->rightSon);
+      tree_node = RLrotation(tree_node, tree_node->rightSon);
+      return tree_node;
     }
-    return RRrotation(tree_node, tree_node->rightSon);
+    tree_node = RRrotation(tree_node, tree_node->rightSon);
+    return tree_node;
   }
   //the tree is balanced
   return tree_node;
@@ -483,20 +530,21 @@ AVLTreeResult AVLTree<Key, Data>::internalAdd(TreeNode<Key, Data> **root,
 }
 
 template<class Key, class Data>
-AVLTreeResult AVLTree<Key, Data>::internalRemove(TreeNode<Key, Data> *tree_node,
+AVLTreeResult AVLTree<Key, Data>::internalRemove(TreeNode<Key,
+                                                          Data> **tree_node,
                                                  Key &key) {
-  if (tree_node == nullptr) return AVL_KeyNotFound;
-  Key curr_key = tree_node->key;
+  if ((*tree_node) == nullptr) return AVL_KeyNotFound;
+  Key curr_key = (*tree_node)->key;
   if (curr_key == key) {
-    deleteTreeNode(&tree_node);
+    deleteTreeNode(tree_node);
   } else if (curr_key > key) {
-    internalRemove(tree_node->leftSon, key);
-    updateTreeNodeHeight(tree_node);
-    tree_node = AVLTreeBalance(tree_node);
+    internalRemove(&((*tree_node)->leftSon), key);
+    updateTreeNodeHeight((*tree_node));
+    *tree_node = AVLTreeBalance((*tree_node));
   } else {
-    internalRemove(tree_node->rightSon, key);
-    updateTreeNodeHeight(tree_node);
-    tree_node = AVLTreeBalance(tree_node);
+    internalRemove(&((*tree_node)->rightSon), key);
+    updateTreeNodeHeight((*tree_node));
+    *tree_node = AVLTreeBalance((*tree_node));
   }
   return AVL_SUCCESS;
 }
@@ -506,9 +554,10 @@ AVLTreeResult AVLTree<Key, Data>::deleteTreeNode(TreeNode<Key,
                                                           Data> **tree_node) {
   TreeNode<Key, Data> *node_to_remove;
   if ((*tree_node)->leftSon == nullptr && (*tree_node)->rightSon == nullptr) {
-    if ((*tree_node)->parent->leftSon->key == (*tree_node)->key) {
+    if ((*tree_node)->parent != nullptr
+        && (*tree_node)->parent->leftSon->key == (*tree_node)->key) {
       (*tree_node)->parent->setLeftSon(nullptr);
-    } else {
+    } else if ((*tree_node)->parent != nullptr) {
       (*tree_node)->parent->setRightSon(nullptr);
     }
     node_to_remove = *tree_node;
@@ -516,11 +565,13 @@ AVLTreeResult AVLTree<Key, Data>::deleteTreeNode(TreeNode<Key,
     delete node_to_remove;
   } else if ((*tree_node)->leftSon != nullptr
       && (*tree_node)->rightSon == nullptr) {
+    (*tree_node)->leftSon->setParent((*tree_node)->parent);
     node_to_remove = *tree_node;
     *tree_node = (*tree_node)->leftSon;
     delete node_to_remove;
   } else if ((*tree_node)->leftSon == nullptr
       && (*tree_node)->rightSon != nullptr) {
+    (*tree_node)->rightSon->setParent((*tree_node)->parent);
     node_to_remove = *tree_node;
     *tree_node = (*tree_node)->rightSon;
     delete node_to_remove;
@@ -541,7 +592,7 @@ void AVLTree<Key, Data>::deleteNodesWithTwoSons(TreeNode<Key,
   }
   swapBetweenNodes((*tree_node), new_tree_node);
   TreeNode<Key, Data> **subtree_root = &(new_tree_node->rightSon);
-  internalRemove(*subtree_root, key);
+  internalRemove(subtree_root, key);
   updateTreeNodeHeight(new_tree_node);
   *tree_node = AVLTreeBalance(new_tree_node);
 }
@@ -580,16 +631,28 @@ AVLTreeResult AVLTree<Key, Data>::remove(Key &key) {
   if (this->root == nullptr) {
     return AVL_KeyNotFound;
   }
-  return internalRemove(this->root, key);
+  return internalRemove(&(this->root), key);
 }
 
 template<class Key, class Data>
-AVLTreeResult AVLTree<Key, Data>::search(const Key &key, Data **data) {
+AVLTreeResult AVLTree<Key, Data>::searchData(const Key &key, Data **data) {
   TreeNode<Key, Data> *tree_node = findNodeInTree(key, this->root);
   if (tree_node == nullptr) {
+    *data = nullptr;
     return AVL_KeyNotFound;
   }
-  *data = &(tree_node->data);
+  Data *data_ptr = &(tree_node->data);
+  *data = data_ptr;
+  return AVL_SUCCESS;
+}
+
+template<class Key, class Data>
+AVLTreeResult AVLTree<Key, Data>::searchNode(const Key &key,
+                                             TreeNode<Key, Data> **node) {
+  *node = findNodeInTree(key, this->root);
+  if (*node == nullptr) {
+    return AVL_KeyNotFound;
+  }
   return AVL_SUCCESS;
 }
 
@@ -619,6 +682,11 @@ TreeNode<Key, Data> *AVLTree<Key, Data>::getSmallest() {
     tree_node = tree_node->leftSon;
   }
   return tree_node;
+}
+
+template<class Key, class Data>
+TreeNode<Key, Data> *AVLTree<Key, Data>::getRoot() {
+  return this->root;
 }
 
 #endif //WET1__AVLTREE_H_
