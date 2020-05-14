@@ -48,22 +48,24 @@ MusicManagerResult MusicManager::AddArtist(int artistID, int numOfSongs) {
 
 MusicManagerResult MusicManager::RemoveArtist(int artistID) {
     TreeNode<int, FirstTreeNodeData *> *node1 = nullptr;
-    if (this->Tree1->searchNode(artistID, &node1) == AVL_SUCCESS) {
-        return MM_EXISTS;
+    if (this->Tree1->searchNode(artistID, &node1) == AVL_KeyNotFound) {
+        return MM_NOT_EXISTS;
     }
     for (int i = 0; i < node1->getData()->numOfSongs; ++i) {
-        if (node1->getData()->songs[i] == nullptr)
-            continue;
         TreeNode<int, SecondTreeNodeData *> *node2 = nullptr;
         node1->getData()->songs[i]->getData()->singerTree->searchNode
                 (artistID, &node2);
+        if (node2 == nullptr)
+            continue;
         this->DeleteData(node2->getData()->songTree->getRoot());
         node2->getData()->songTree->cleanTree(node2->getData()->songTree->getRoot());
         delete node2->getData();
         node1->getData()->songs[i]->getData()->singerTree->remove(artistID);
 
     }
-
+    delete node1->getData();
+    this->Tree1->remove(artistID);
+    return MM_SUCCESS;
 }
 
 void MusicManager::DeleteData(TreeNode<int, ThirdTreeNodeData *> *root) {
