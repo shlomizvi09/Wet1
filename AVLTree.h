@@ -107,7 +107,7 @@ void TreeNode<Key, Data>::setHeight(int new_height) {
 }
 
 template<class Key, class Data>
- Data &TreeNode<Key, Data>::getData() {
+Data &TreeNode<Key, Data>::getData() {
   return this->data;
 }
 
@@ -148,7 +148,6 @@ template<class Key, class Data>
 void TreeNode<Key, Data>::printKey() const {
   std::cout << this->key << " ";
 }
-
 
 /*
  * AVLTree
