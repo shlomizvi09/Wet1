@@ -12,21 +12,17 @@
 class MusicManager;
 
 class PlayCountNodeData;
-
 class FirstTreeNodeData;
-
 class SecondTreeNodeData;
-
 class ThirdTreeNodeData;
 
 // Music Manager struct //
 
 class MusicManager {
-public:
     AVLTree<int, FirstTreeNodeData> *Tree1;
     LinkedList<PlayCountNodeData> *PlayCountList;
     int TotalSongs;
-
+public:
     MusicManager() : TotalSongs(0) {
         PlayCountList = new LinkedList<PlayCountNodeData>();
         Tree1 = new AVLTree<int, FirstTreeNodeData>();
@@ -36,6 +32,7 @@ public:
         delete Tree1;
         delete PlayCountList;
     }
+
 };
 
 // Music Manager functions //
@@ -94,6 +91,7 @@ public:
     bool operator!=(const PlayCountNodeData *node) const {
         return (this->plays != node->plays);
     }
+
 };
 
 class FirstTreeNodeData {

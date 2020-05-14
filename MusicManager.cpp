@@ -10,10 +10,10 @@ void *Init() {
     MusicManager *DS;
     try {
         DS = new MusicManager();
-        return (void *) DS;
     } catch (...) {
         return nullptr;
     }
+    return (void *) DS;
 }
 
 StatusType AddArtist(void *DS, int artistID, int numOfSongs) {
@@ -54,10 +54,11 @@ StatusType AddArtist(void *DS, int artistID, int numOfSongs) {
 }
 
 
+/*
 StatusType RemoveArtist(void *DS, int artistID) {
     if (DS == nullptr || artistID <= 0)
         return INVALID_INPUT;
     FirstTreeNodeData *node1 = nullptr;
 
-}
+*/
 

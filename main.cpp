@@ -37,5 +37,9 @@ void Person::printNum() {
 }
 
 int main() {
-  return 0;
+    void *ds=Init();
+    AddArtist(ds,2,10);
+    MusicManager* d = (MusicManager*)ds;
+
+    return 0;
 }
