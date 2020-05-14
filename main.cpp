@@ -8,18 +8,20 @@
 using std::string;
 
 class Person {
-  int *num;
+ public:
   string name;
   int age;
- public:
-  Person() : name(), age() {}
+  friend class Animal;
 
-  Person(int *num, string name, int age) : num(num), name(name), age(age) {}
+  Person() : name(""), age(0) {}
+
+  Person(string name, int age) : name(name), age(age) {}
 
   Person(const Person &Old) : name(Old.name), age(Old.age) {}
 
-  void setNum(int *num1);
-  void printNum();
+  ~Person() {
+    std::cout << "error";
+  }
 
   friend std::ostream &operator<<(std::ostream &os, const Person &other);
 };
@@ -29,13 +31,25 @@ std::ostream &operator<<(std::ostream &os, const Person &other) {
   return os;
 }
 
-void Person::setNum(int *num1) {
-  this->num = num1;
-}
-void Person::printNum() {
-  std::cout << *(this->num) << " ";
+class Animal {
+  Person *owner;
+ public:
+  Animal(Person *owner) : owner(owner) {}
+  ~Animal() {
+
+  }
+  void printOwner();
+
+};
+
+void Animal::printOwner() {
+  std::cout << owner->name;
 }
 
 int main() {
+  Person *shlomi = new Person("shlomi", 26);
+  Animal *animal = new Animal(shlomi);
+  delete animal;
+  std::cout << shlomi->name;
   return 0;
 }
