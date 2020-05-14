@@ -47,9 +47,23 @@ void Animal::printOwner() {
 }
 
 int main() {
-  Person *shlomi = new Person("shlomi", 26);
-  Animal *animal = new Animal(shlomi);
-  delete animal;
-  std::cout << shlomi->name;
-  return 0;
+    void *mivne = Init();
+    MusicManager *ds = (MusicManager*)mivne;
+    AddArtist(mivne,3,10);
+    AddArtist(mivne,3,3);
+    AddArtist(mivne,2,13);
+    AddArtist(mivne,5,15);
+    AddArtist(mivne,6,1);
+    AddArtist(mivne,6,0);
+    AddArtist(mivne,4,100);
+    AddArtist(mivne,-5,100);
+    AddArtist(mivne,0,100);
+    AddArtist(mivne,55,10540);
+    AddArtist(mivne,4,-5);
+    AddArtist(mivne,1,0);
+
+
+    printf("great success");
+
+    return 0;
 }

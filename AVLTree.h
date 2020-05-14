@@ -249,7 +249,6 @@ void AVLTree<Key, Data>::cleanTree(TreeNode<Key, Data> *tree_node) {
   if (tree_node == nullptr) {
     return;
   }
-  TreeNode<Key, Data> *temp;
   cleanTree(tree_node->rightSon);
   cleanTree(tree_node->leftSon);
   tree_node->setParent(nullptr);
@@ -677,7 +676,7 @@ TreeNode<Key, Data> *AVLTree<Key, Data>::getSmallest() {
   if (this->root == nullptr) {
     return nullptr;
   }
-  TreeNode<Key, Data> *tree_node = this->root->leftSon;
+  TreeNode<Key, Data> *tree_node = this->root;
   while (tree_node->leftSon != nullptr) {
     tree_node = tree_node->leftSon;
   }

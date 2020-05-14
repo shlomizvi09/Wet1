@@ -59,10 +59,10 @@ public:
         T getData();
 
         // returns the next node //
-        ListNode *getNext() const;
+        ListNode *getNext();
 
         // returns the previous node //
-        ListNode *getPrev() const;
+        ListNode *getPrev();
 
         // removes the node //
         void removeNode();
@@ -151,8 +151,9 @@ void LinkedList<T>::deleteNode(LinkedList::ListNode *node) {
 template<class T>
 typename LinkedList<T>::ListNode *
 LinkedList<T>::insertFirst(T
-                           data) {
-    ListNode *newNode = new ListNode(data);
+data) {
+    ListNode *newNode = new ListNode();
+    newNode->changeData(data);
     newNode->setPrev(this->head);
     newNode->setNext(this->head->getNext());
     newNode->getNext()->setPrev(newNode);
@@ -174,23 +175,23 @@ LinkedList<T>::ListNode::ListNode(T data) :data(data) {
 
 template<class T>
 LinkedList<T>::ListNode::ListNode() {
-    this->data = T();
+    this->data = nullptr;
     this->next = nullptr;
     this->prev = nullptr;
 }
 
 template<class T>
 T LinkedList<T>::ListNode::getData() {
-    return this->data;
+    return data;
 }
 
 template<class T>
-typename LinkedList<T>::ListNode *LinkedList<T>::ListNode::getNext() const {
+typename LinkedList<T>::ListNode *LinkedList<T>::ListNode::getNext() {
     return this->next;
 }
 
 template<class T>
-typename LinkedList<T>::ListNode *LinkedList<T>::ListNode::getPrev() const {
+typename LinkedList<T>::ListNode *LinkedList<T>::ListNode::getPrev() {
     return this->prev;
 }
 
@@ -202,18 +203,17 @@ void LinkedList<T>::ListNode::removeNode() {
 }
 
 template<class T>
-void LinkedList<T>::ListNode::setNext(LinkedList::ListNode *next) {
+void LinkedList<T>::ListNode::setNext(LinkedList<T>::ListNode *next) {
     this->next = next;
 }
 
 template<class T>
-void LinkedList<T>::ListNode::setPrev(LinkedList::ListNode *prev) {
+void LinkedList<T>::ListNode::setPrev(LinkedList<T>::ListNode *prev) {
     this->prev = prev;
 }
 
 template<class T>
 void LinkedList<T>::ListNode::changeData(T data) {
-    delete this->data;
     this->data = data;
 
 }
