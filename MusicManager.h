@@ -9,6 +9,14 @@
 #include "AVLTree.h"
 #include "library1.h"
 
+typedef enum MusicManagerResult {
+  MM_SUCCESS,
+  MM_EXISTS,
+  MM_NOT_EXISTS,
+  MM_BAD_ALLOC,
+  MM_FAIL
+} MusicManagerResult;
+
 class MusicManager;
 
 class PlayCountNodeData;

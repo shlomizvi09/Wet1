@@ -3,4 +3,4 @@ project(Wet1)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Wet1 main.cpp AVLTree.h LinkedList.h MusicManager.cpp MusicManager.h)
+add_executable(Wet1 main.cpp AVLTree.h LinkedList.h library1.cpp)
