@@ -36,14 +36,6 @@ class TreeNode {
   void updateData(Data new_data); // maybe we'll need it
   void setHeight(int new_height);
 
-  const Key &getKey() const; // once created, the key is unchangeable
-
-  TreeNode *getParent() const;
-
-  TreeNode *getRightSon() const;
-
-  TreeNode *getLeftSon() const;
-
   const int getHeight() const; // may change only by setHeight
 
  public:
@@ -65,7 +57,15 @@ class TreeNode {
         leftSon(old_tree_node.leftSon) {}
   ~TreeNode() = default;
 
-  Data &getData();
+  TreeNode *getParent() const;
+
+  TreeNode *getRightSon() const;
+
+  TreeNode *getLeftSon() const;
+
+  const Data &getData();
+
+  const Key &getKey() const; // once created, the key is unchangeable
 
   void printData() const;
 
@@ -107,12 +107,7 @@ void TreeNode<Key, Data>::setHeight(int new_height) {
 }
 
 template<class Key, class Data>
-const Key &TreeNode<Key, Data>::getKey() const {
-  return this->key;
-}
-
-template<class Key, class Data>
-Data &TreeNode<Key, Data>::getData() {
+const Data &TreeNode<Key, Data>::getData() {
   return this->data;
 }
 
@@ -141,6 +136,10 @@ const int TreeNode<Key, Data>::getHeight() const {
  */
 
 template<class Key, class Data>
+const Key &TreeNode<Key, Data>::getKey() const {
+  return this->key;
+}
+template<class Key, class Data>
 void TreeNode<Key, Data>::printData() const {
   std::cout << this->data << " ";
 }
@@ -149,6 +148,7 @@ template<class Key, class Data>
 void TreeNode<Key, Data>::printKey() const {
   std::cout << this->key << " ";
 }
+
 
 /*
  * AVLTree
