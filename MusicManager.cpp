@@ -67,6 +67,17 @@ MusicManagerResult MusicManager::RemoveArtist(int artistID) {
     return MM_SUCCESS;
 }
 
+MusicManagerResult MusicManager::NumberOfStreams(int artistID, int songID, int *streams) {
+    TreeNode<int, FirstTreeNodeData *> *node1 = nullptr;
+    if (this->Tree1->searchNode(artistID, &node1) == AVL_KeyNotFound) {
+        return MM_NOT_EXISTS;
+    }
+    if(node1->getData()->numOfSongs<=songID)
+        return MM_FAIL;
+    *streams=node1->getData()->songs[songID]->getData()->plays;
+    return MM_SUCCESS;
+}
+
 void MusicManager::DeleteData(TreeNode<int, ThirdTreeNodeData *> *root) {
     if (root == nullptr) {
         return;

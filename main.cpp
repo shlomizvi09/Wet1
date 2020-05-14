@@ -62,6 +62,9 @@ int main() {
     AddArtist(mivne,4,-5);
     AddArtist(mivne,1,0);
     RemoveArtist(mivne,5);
+    int a=10;
+    NumberOfStreams(mivne,2,14,&a);
+
 
 
     printf("great success");

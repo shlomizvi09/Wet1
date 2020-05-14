@@ -1,23 +1,23 @@
 #include "library1.h"
 #include "MusicManager.h"
+
 using std::bad_alloc;
 
 void *Init() {
-    MusicManager *DS;
     try {
-        DS = new MusicManager();
+        MusicManager *DS = new MusicManager();
+        return (void *) DS;
     }
     catch (...) {
-        DS = nullptr;
+        return nullptr;
     }
 
-    return (void *) DS;
 }
 
 StatusType AddArtist(void *DS, int artistID, int numOfSongs) {
     if (numOfSongs <= 0 || DS == nullptr || artistID <= 0)
         return INVALID_INPUT;
-    MusicManager *ds = (MusicManager *)DS;
+    MusicManager *ds = (MusicManager *) DS;
     MusicManagerResult tmpResult;
     try {
         tmpResult = ds->AddArtist(artistID, numOfSongs);
@@ -29,16 +29,33 @@ StatusType AddArtist(void *DS, int artistID, int numOfSongs) {
     return SUCCESS;
 }
 
-StatusType RemoveArtist(void *DS, int artistID){
-    if(DS== nullptr||artistID<=0)
+StatusType RemoveArtist(void *DS, int artistID) {
+    if (DS == nullptr || artistID <= 0)
         return INVALID_INPUT;
-    MusicManager *ds = (MusicManager *)DS;
+    MusicManager *ds = (MusicManager *) DS;
     MusicManagerResult tmpResult;
     try {
         tmpResult = ds->RemoveArtist(artistID);
     } catch (std::bad_alloc &e) {
         return ALLOCATION_ERROR;
     }
+    if (tmpResult == MM_NOT_EXISTS)
+        return FAILURE;
+    return SUCCESS;
+}
+
+StatusType NumberOfStreams(void *DS, int artistID, int songID, int *streams) {
+    if (songID <= 0 || DS == nullptr || artistID <= 0)
+        return INVALID_INPUT;
+    MusicManager *ds = (MusicManager *) DS;
+    MusicManagerResult tmpResult;
+    try {
+        tmpResult = ds->NumberOfStreams(artistID, songID, streams);
+    } catch (std::bad_alloc &e) {
+        return ALLOCATION_ERROR;
+    }
+    if (tmpResult == MM_FAIL)
+        return INVALID_INPUT;
     if (tmpResult == MM_NOT_EXISTS)
         return FAILURE;
     return SUCCESS;

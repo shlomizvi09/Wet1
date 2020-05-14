@@ -59,6 +59,8 @@ public:
 
     MusicManagerResult RemoveArtist(int artistID);
 
+    MusicManagerResult NumberOfStreams(int artistID, int songID, int *streams);
+
     void DeleteData(TreeNode<int, ThirdTreeNodeData *> *root);
 };
 
