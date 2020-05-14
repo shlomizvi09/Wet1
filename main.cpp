@@ -31,25 +31,7 @@ std::ostream &operator<<(std::ostream &os, const Person &other) {
   return os;
 }
 
-class Animal {
-  Person *owner;
- public:
-  Animal(Person *owner) : owner(owner) {}
-  ~Animal() {
-
-  }
-  void printOwner();
-
-};
-
-void Animal::printOwner() {
-  std::cout << owner->name;
-}
-
 int main() {
-  Person *shlomi = new Person("shlomi", 26);
-  Animal *animal = new Animal(shlomi);
-  delete animal;
-  std::cout << shlomi->name;
+  AVLTree<int, Person> *new_tree = new AVLTree<int, Person>();
   return 0;
 }
