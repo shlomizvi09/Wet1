@@ -37,17 +37,5 @@ void Person::printNum() {
 }
 
 int main() {
-  AVLTree<int, int> *new_tree = new AVLTree<int, int>();
-  for (int num = 1; num < 10; ++num) {
-    new_tree->add(num, num);
-  }
-  TreeNode<int, int> *node_ptr;
-  AVLTreeResult res = new_tree->searchNode(4, &node_ptr);
-  if (res == AVL_KeyNotFound) {
-    std::cout << res << " ";
-    return 0;
-  }
-  node_ptr->printKey();
-  std::cout << "is found ! ";
   return 0;
 }
