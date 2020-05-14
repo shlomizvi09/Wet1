@@ -20,15 +20,24 @@ MusicManagerResult MusicManager::AddToSongCount(int artistID, int songID) {
   if (num_of_plays_node == nullptr) {
     return MM_FAIL;
   }
-  TreeNode<int, SecondTreeNodeData *> *singer_node = nullptr;
+  TreeNode<int, SecondTreeNodeData *> *artist_node = nullptr;
   res = num_of_plays_node->getData()->singerTree->searchNode(artistID,
-                                                             &singer_node);
+                                                             &artist_node);
   if (res == AVL_KeyNotFound) {
     return MM_FAIL;
   }
   TreeNode<int, ThirdTreeNodeData *> *song_node = nullptr;
-  res = (singer_node->getData())->songTree->searchNode(songID, &song_node);
+  res = (artist_node->getData())->songTree->searchNode(songID, &song_node);
   if (res == AVL_KeyNotFound) {
     return MM_FAIL;
   }
+  if ((artist_node->getData()->originNode->getData()->plays + 1)
+      != (artist_node->getData()->originNode->getNext()->getData()->plays)) {
+
+  }
+
+}
+
+void SecondTreeNodeData::UpdateSmallest() {
+  this->smallest = this->songTree->getSmallest();
 }

@@ -144,9 +144,7 @@ class SecondTreeNodeData {
 
   ~SecondTreeNodeData() = default;
 
-  void ChangeSmallest(TreeNode<int, ThirdTreeNodeData*> *node) {
-    this->smallest = node;
-  }
+  void UpdateSmallest();
 };
 
 class ThirdTreeNodeData {
