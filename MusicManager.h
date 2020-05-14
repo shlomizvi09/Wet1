@@ -64,8 +64,8 @@ public:
 
     PlayCountNodeData(int numOfPlays, AVLTree<int, SecondTreeNodeData> *singerTree,
                       TreeNode<int, class SecondTreeNodeData> *smallest) : plays
-                  (numOfPlays), singerTree
-            (singerTree), smallest(smallest) {};
+                                                                                   (numOfPlays), singerTree
+                                                                                   (singerTree), smallest(smallest) {};
 
     PlayCountNodeData(const PlayCountNodeData &other) : plays(other.plays),
                                                         singerTree(other.singerTree),
@@ -79,12 +79,12 @@ public:
 
     ~PlayCountNodeData() = default;
 
-    void ChangeSmallest(TreeNode<int, class SecondTreeNodeData> *node){
-        smallest=node;
+    void ChangeSmallest(TreeNode<int, class SecondTreeNodeData> *node) {
+        smallest = node;
     }
 
-    void ChangePlays(int plays){
-        this->plays=plays;
+    void ChangePlays(int plays) {
+        this->plays = plays;
     }
 
     bool operator==(const PlayCountNodeData *node) const {
@@ -107,7 +107,7 @@ public:
     }
 
     FirstTreeNodeData(int numOfSongs) : numOfSongs(numOfSongs) {
-        songs = new PlayCountNodeData*[numOfSongs];
+        songs = new PlayCountNodeData *[numOfSongs];
     }
 
     ~FirstTreeNodeData() {
@@ -129,6 +129,10 @@ public:
                                                           songTree(other.songTree),
                                                           smallest(other.smallest) {};
 
+    SecondTreeNodeData(LinkedList<PlayCountNodeData>::ListNode *originNode, AVLTree<int, ThirdTreeNodeData> *songTree,
+                       TreeNode<int, ThirdTreeNodeData> *smallest) : originNode(originNode), songTree(songTree),
+                                                                     smallest(smallest) {};
+
     ~SecondTreeNodeData() = default;
 
     void ChangeSmallest(TreeNode<int, ThirdTreeNodeData> *node) {
@@ -143,7 +147,7 @@ public:
 
     ThirdTreeNodeData() : originArtist(nullptr) {};
 
-    ThirdTreeNodeData(TreeNode<int,SecondTreeNodeData> *origin): originArtist(origin){};
+    ThirdTreeNodeData(TreeNode<int, SecondTreeNodeData> *origin) : originArtist(origin) {};
 
     ThirdTreeNodeData(const ThirdTreeNodeData &other) : originArtist(
             other.originArtist) {};

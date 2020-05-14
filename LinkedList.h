@@ -27,6 +27,8 @@ public:
     // return the tail of the list //
     ListNode *getTail();
 
+    ListNode *getFirst();
+
     // insert new node, next to current //
     ListNode *insertInPlace(ListNode *current, T data);
 
@@ -156,6 +158,11 @@ LinkedList<T>::insertFirst(T
     newNode->getNext()->setPrev(newNode);
     newNode->getPrev()->setNext(newNode);
     return newNode;
+}
+
+template<class T>
+typename LinkedList<T>::ListNode *LinkedList<T>::getFirst() {
+    return this->getHead()->getNext();
 }
 
 
