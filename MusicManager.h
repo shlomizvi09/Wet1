@@ -13,6 +13,7 @@ typedef enum MusicManagerResult {
     MM_SUCCESS,
     MM_EXISTS,
     MM_NOT_EXISTS,
+    MM_NULL_ARGUMENT,
     MM_BAD_ALLOC,
     MM_FAIL
 } MusicManagerResult;
@@ -75,7 +76,7 @@ public:
 class PlayCountNodeData {
     int plays;
     AVLTree<int, SecondTreeNodeData *> *singerTree;
-    TreeNode<int, class SecondTreeNodeData *> *smallest;
+    TreeNode<int, class SecondTreeNodeData *> *smallest_singer;
 
     friend class MusicManager;
 
@@ -93,26 +94,28 @@ public:
                                                                                      (numOfPlays),
                                                                              singerTree
                                                                                      (singerTree),
-                                                                             smallest(
-                                                                                     smallest) {};
+                                                                             smallest_singer(
+                                                                                     smallest_singer) {};
 
     /*PlayCountNodeData(const PlayCountNodeData &other) : plays(other.plays),
                                                         singerTree(other.singerTree),
                                                         smallest(other.smallest) {}*/
 
-    PlayCountNodeData() : plays(0), singerTree(nullptr), smallest(nullptr) {}
+    PlayCountNodeData() : plays(0), singerTree(nullptr), smallest_singer(nullptr) {}
 
-    PlayCountNodeData(int plays) : plays(plays), singerTree(nullptr), smallest(nullptr) {}
+    PlayCountNodeData(int plays) : plays(plays), singerTree(nullptr), smallest_singer(nullptr) {}
 
     ~PlayCountNodeData() = default;
 
     void ChangeSmallest(TreeNode<int, SecondTreeNodeData *> *node) {
-        smallest = node;
+        smallest_singer = node;
     }
 
     void ChangePlays(int plays) {
         this->plays = plays;
     }
+
+    void updateSmallest();
 
     bool operator==(const PlayCountNodeData *node) const {
         return (this->plays == node->plays);
@@ -153,7 +156,7 @@ public:
 class SecondTreeNodeData {
     LinkedList<PlayCountNodeData *>::ListNode *originNode;
     AVLTree<int, ThirdTreeNodeData *> *songTree;
-    TreeNode<int, ThirdTreeNodeData *> *smallest;
+    TreeNode<int, ThirdTreeNodeData *> *smallest_song;
 
     friend class MusicManager;
 
@@ -165,19 +168,19 @@ class SecondTreeNodeData {
 
 public:
     SecondTreeNodeData() : originNode(nullptr), songTree(nullptr),
-                           smallest(nullptr) {};
+                           smallest_song(nullptr) {};
 
     SecondTreeNodeData(const SecondTreeNodeData &other)
             : originNode(other.originNode),
               songTree(other.songTree),
-              smallest(other.smallest) {};
+              smallest_song(other.smallest_song) {};
 
     SecondTreeNodeData(LinkedList<PlayCountNodeData *>::ListNode *originNode,
                        AVLTree<int, ThirdTreeNodeData *> *songTree,
                        TreeNode<int, ThirdTreeNodeData *> *smallest) : originNode(
             originNode), songTree(songTree),
-                                                                       smallest(
-                                                                               smallest) {};
+                                                                       smallest_song(
+                                                                               smallest_song) {};
 
     ~SecondTreeNodeData() = default;
 
@@ -205,6 +208,9 @@ public:
             other.originArtist) {};
 
     ~ThirdTreeNodeData() = default;
+
+    void setOriginArtist(TreeNode<int,
+            SecondTreeNodeData *> *new_origin_artist);
 };
 
 /*LinkedList<PlayCountNodeData>::ListNode PlayCountNode;

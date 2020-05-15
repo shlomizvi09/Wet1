@@ -251,7 +251,7 @@ void PlayCountNodeData::updateSmallest() {
   this->smallest_singer = this->singerTree->getSmallest();
 }
 
-}
+
 
 void SecondTreeNodeData::UpdateSmallest() {
   this->smallest_song = this->songTree->getSmallest();
