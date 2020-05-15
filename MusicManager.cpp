@@ -144,9 +144,9 @@ MusicManagerResult MusicManager::AddToSongCount(int artistID, int songID) {
     AVLTree<int, SecondTreeNodeData *>
         *new_tree2 = new AVLTree<int, SecondTreeNodeData *>();
     new_tree2->add(artistID, new_second_tree_data);
-    TreeNode<int, SecondTreeNodeData *> *new_origin_artist = nullptr;
-    new_tree2->searchNode(artistID, &new_origin_artist);
-    third_tree_data->setOriginArtist(new_origin_artist);
+    TreeNode<int, SecondTreeNodeData *> *new_second_tree_node = nullptr;
+    new_tree2->searchNode(artistID, &new_second_tree_node);
+    third_tree_data->setOriginArtist(new_second_tree_node);
     PlayCountNodeData *new_play_count_data = new PlayCountNodeData(
         num_plays_list_data->plays + 1,
         new_tree2,
@@ -168,10 +168,16 @@ MusicManagerResult MusicManager::AddToSongCount(int artistID, int songID) {
       (*new_second_tree_data)->UpdateSmallest();
       new_num_plays_list_data->singerTree->add(artistID, *new_second_tree_data);
       new_num_plays_list_data->updateSmallest();
+      TreeNode<int, SecondTreeNodeData *> *new_second_tree_node = nullptr;
+      new_num_plays_list_data->singerTree->searchNode(artistID, &new_second_tree_node);
+      third_tree_data->setOriginArtist(new_second_tree_node);
     } else {
       (*new_second_tree_data)->songTree->add(songID, third_tree_data);
       (*new_second_tree_data)->UpdateSmallest();
       new_num_plays_list_data->updateSmallest();
+      TreeNode<int, SecondTreeNodeData *> *new_second_tree_node = nullptr;
+      new_num_plays_list_data->singerTree->searchNode(artistID, &new_second_tree_node);
+      third_tree_data->setOriginArtist(new_second_tree_node);
     }
   }
   second_tree_data->songTree->remove(songID);
