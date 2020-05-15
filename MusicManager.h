@@ -61,7 +61,15 @@ public:
 
     MusicManagerResult NumberOfStreams(int artistID, int songID, int *streams);
 
-    void DeleteData(TreeNode<int, ThirdTreeNodeData *> *root);
+    void DeleteData(TreeNode<int, ThirdTreeNodeData *> *root, TreeNode<int, FirstTreeNodeData *> *node1);
+
+    MusicManagerResult Quit();
+
+    void PatrolTree(TreeNode<int, SecondTreeNodeData *> *root, TreeNode<int, FirstTreeNodeData *> *node1);
+
+    void DeleteMainTree(TreeNode<int, FirstTreeNodeData *> *root);
+
+    MusicManagerResult GetRecommendedSongs(int numOfSongs, int *artists, int *songs);
 };
 
 class PlayCountNodeData {

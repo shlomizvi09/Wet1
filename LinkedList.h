@@ -56,7 +56,7 @@ public:
         ~ListNode() = default;
 
         // returns the data contained in the node //
-        T getData();
+        T& getData();
 
         // returns the next node //
         ListNode *getNext();
@@ -181,7 +181,7 @@ LinkedList<T>::ListNode::ListNode() {
 }
 
 template<class T>
-T LinkedList<T>::ListNode::getData() {
+T& LinkedList<T>::ListNode::getData() {
     return data;
 }
 

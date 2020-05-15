@@ -46,25 +46,39 @@ void Animal::printOwner() {
   std::cout << owner->name;
 }
 
+void InOrder(TreeNode<int, int> *node){
+    if(node== nullptr)
+        return;
+    InOrder(node->getLeftSon());
+    node->printKey();
+    InOrder(node->getRightSon());
+}
+
 int main() {
     void *mivne = Init();
     MusicManager *ds = (MusicManager*)mivne;
-    AddArtist(mivne,3,10);
-    AddArtist(mivne,3,3);
-    AddArtist(mivne,2,13);
-    AddArtist(mivne,5,2);
-    AddArtist(mivne,6,1);
-    AddArtist(mivne,6,0);
-    AddArtist(mivne,4,100);
-    AddArtist(mivne,-5,100);
-    AddArtist(mivne,0,100);
-    AddArtist(mivne,55,10540);
-    AddArtist(mivne,4,-5);
-    AddArtist(mivne,1,0);
+    AddArtist(mivne,1,10);
+    AddArtist(mivne,2,1);
+    AddArtist(mivne,3,2);
+    AddArtist(mivne,4,3);
+    AddArtist(mivne,5,4);
+    RemoveArtist(mivne,1);
+    RemoveArtist(mivne,2);
     RemoveArtist(mivne,5);
-    int a=10;
-    NumberOfStreams(mivne,2,14,&a);
 
+    int a=10;
+    NumberOfStreams(mivne,4,0,&a);
+    Quit(&mivne);
+
+    AVLTree<int,int> numberTree();
+    numberTree.add(1,1);
+    numberTree().add(3,1);
+    numberTree().add(2,1);
+    numberTree().add(4,1);
+    numberTree().add(5,1);
+    numberTree().add(9,1);
+    numberTree().add(7,1);
+    InOrder(numberTree().getRoot());
 
 
     printf("great success");

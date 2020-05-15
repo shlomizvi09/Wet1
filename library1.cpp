@@ -45,7 +45,7 @@ StatusType RemoveArtist(void *DS, int artistID) {
 }
 
 StatusType NumberOfStreams(void *DS, int artistID, int songID, int *streams) {
-    if (songID <= 0 || DS == nullptr || artistID <= 0)
+    if (songID < 0 || DS == nullptr || artistID <= 0)
         return INVALID_INPUT;
     MusicManager *ds = (MusicManager *) DS;
     MusicManagerResult tmpResult;
@@ -60,5 +60,13 @@ StatusType NumberOfStreams(void *DS, int artistID, int songID, int *streams) {
         return FAILURE;
     return SUCCESS;
 }
+
+void Quit(void** DS){
+    MusicManager* ds = (MusicManager*)*DS;
+    if(ds->Quit()==MM_SUCCESS)
+        delete ds;
+    *DS= nullptr;
+}
+
 
 
