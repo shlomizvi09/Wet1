@@ -68,7 +68,7 @@ MusicManagerResult MusicManager::RemoveArtist(int artistID) {
             this->PlayCountList->deleteNode(playNode);
             continue;
         }
-        playNode->getData()->smallest = playNode->getData()->singerTree->getSmallest();
+        playNode->getData()->smallest_singer = playNode->getData()->singerTree->getSmallest();
     }
     delete node1->getData();
     this->Tree1->remove(artistID);
