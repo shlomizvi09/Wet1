@@ -181,7 +181,7 @@ LinkedList<T>::ListNode::ListNode() {
 }
 
 template<class T>
-T& LinkedList<T>::ListNode::getData() {
+T LinkedList<T>::ListNode::getData() {
     return data;
 }
 

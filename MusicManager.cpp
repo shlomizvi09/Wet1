@@ -150,37 +150,116 @@ MusicManagerResult MusicManager::GetRecommendedSongs(int numOfSongs, int *artist
 using std::bad_alloc;
 
 MusicManagerResult MusicManager::AddToSongCount(int artistID, int songID) {
-    FirstTreeNodeData **artist_data_tree_one = nullptr;
-    AVLTreeResult res = this->Tree1->searchData(artistID, &artist_data_tree_one);
-    if (res == AVL_KeyAlreadyExists) {
-        return MM_NOT_EXISTS;
+  FirstTreeNodeData **first_tree_data = nullptr;
+  AVLTreeResult
+      res = this->Tree1->searchData(artistID, &first_tree_data);
+  if (res == AVL_KeyAlreadyExists) {
+    return MM_NOT_EXISTS;
+  }
+  if (songID >= (*first_tree_data)->numOfSongs) {
+    return MM_FAIL;
+  }
+  LinkedList<PlayCountNodeData *>::ListNode
+      *num_plays_list_node = (*first_tree_data)->songs[songID];
+  if (num_plays_list_node == nullptr) {
+    return MM_FAIL;
+  }
+  PlayCountNodeData *num_plays_list_data = num_plays_list_node->getData();
+  if (num_plays_list_data == nullptr) {
+    return MM_NULL_ARGUMENT;
+  }
+  LinkedList<PlayCountNodeData *>::ListNode
+      *next_num_plays_list_node = num_plays_list_node->getNext();
+  PlayCountNodeData *new_num_plays_list_data = next_num_plays_list_node->getData();
+  if (new_num_plays_list_data == nullptr) {
+    return MM_NULL_ARGUMENT;
+  }
+  TreeNode<int, SecondTreeNodeData *> *second_tree_node = nullptr;
+  res = num_plays_list_data->singerTree->searchNode(artistID, &second_tree_node);
+  if (res == AVL_KeyNotFound) {
+    return MM_FAIL;
+  }
+  SecondTreeNodeData *second_tree_data = second_tree_node->getData();
+  if (second_tree_data == nullptr) {
+    return MM_NULL_ARGUMENT;
+  }
+  TreeNode<int, ThirdTreeNodeData *> *third_tree_node = nullptr;
+  res = second_tree_data->songTree->searchNode(songID, &third_tree_node);
+  if (res == AVL_KeyNotFound) {
+    return MM_FAIL;
+  }
+  ThirdTreeNodeData *third_tree_data = third_tree_node->getData();
+  if (third_tree_node == nullptr) {
+    return MM_NULL_ARGUMENT;
+  }
+  /*if the num_of_play_list_node is the last node before the tail
+   * OR there is no node with the song's new plays number*/
+  if (next_num_plays_list_node == this->PlayCountList->getTail()
+      || num_plays_list_data->plays + 1
+          != new_num_plays_list_data->plays) {
+    AVLTree<int, ThirdTreeNodeData *> *new_tree3 = new AVLTree<int, ThirdTreeNodeData *>();
+    new_tree3->add(songID, third_tree_data);
+    SecondTreeNodeData *new_second_tree_data =
+        new SecondTreeNodeData(nullptr, new_tree3, new_tree3->getSmallest());
+    AVLTree<int, SecondTreeNodeData *>
+        *new_tree2 = new AVLTree<int, SecondTreeNodeData *>();
+    new_tree2->add(artistID, new_second_tree_data);
+    TreeNode<int, SecondTreeNodeData *> *new_origin_artist = nullptr;
+    new_tree2->searchNode(artistID, &new_origin_artist);
+    third_tree_data->setOriginArtist(new_origin_artist);
+    PlayCountNodeData *new_play_count_data = new PlayCountNodeData(
+        num_plays_list_data->plays + 1,
+        new_tree2,
+        new_tree2->getSmallest());
+    next_num_plays_list_node = this->PlayCountList->insertInPlace(
+        num_plays_list_node,
+        new_play_count_data);
+    new_second_tree_data->setOriginNode(next_num_plays_list_node);
+    (*first_tree_data)->songs[songID] = next_num_plays_list_node;
+  } else if (num_plays_list_data->plays + 1
+      == next_num_plays_list_node->getData()->plays) {// if the new num_of_play_list_node does exist
+    SecondTreeNodeData **new_second_tree_data = nullptr;
+    new_num_plays_list_data->singerTree->searchData(artistID, &new_second_tree_data);
+    if (*new_second_tree_data == nullptr) { // the artist isn't in this listNode
+      AVLTree<int, ThirdTreeNodeData *> *new_tree3 = new AVLTree<int, ThirdTreeNodeData *>();
+      new_tree3->add(songID, third_tree_data);
+      *new_second_tree_data =
+          new SecondTreeNodeData(next_num_plays_list_node, new_tree3, new_tree3->getSmallest());
+      (*new_second_tree_data)->UpdateSmallest();
+      new_num_plays_list_data->singerTree->add(artistID, *new_second_tree_data);
+      new_num_plays_list_data->updateSmallest();
+    } else {
+      (*new_second_tree_data)->songTree->add(songID, third_tree_data);
+      (*new_second_tree_data)->UpdateSmallest();
+      new_num_plays_list_data->updateSmallest();
     }
-    if (songID >= (*artist_data_tree_one)->numOfSongs) {
-        return MM_FAIL;
+  }
+  second_tree_data->songTree->remove(songID);
+  if (second_tree_data->songTree->isEmpty()) {
+    delete second_tree_data->songTree;
+    delete second_tree_data;
+    num_plays_list_data->singerTree->remove(artistID);
+    if (num_plays_list_data->singerTree->isEmpty()) {
+      delete num_plays_list_data->singerTree;
+      delete num_plays_list_data;
+      this->PlayCountList->deleteNode(num_plays_list_node);
     }
-    LinkedList<PlayCountNodeData *>::ListNode
-            *num_of_plays_node = (*artist_data_tree_one)->songs[songID];
-    if (num_of_plays_node == nullptr) {
-        return MM_FAIL;
-    }
-    TreeNode<int, SecondTreeNodeData *> *artist_node = nullptr;
-    res = num_of_plays_node->getData()->singerTree->searchNode(artistID,
-                                                               &artist_node);
-    if (res == AVL_KeyNotFound) {
-        return MM_FAIL;
-    }
-    TreeNode<int, ThirdTreeNodeData *> *song_node = nullptr;
-    res = (artist_node->getData())->songTree->searchNode(songID, &song_node);
-    if (res == AVL_KeyNotFound) {
-        return MM_FAIL;
-    }
-    if ((artist_node->getData()->originNode->getData()->plays + 1)
-        != (artist_node->getData()->originNode->getNext()->getData()->plays)) {
-
-    }
+  }
+  return MM_SUCCESS;
+}
+void PlayCountNodeData::updateSmallest() {
+  this->smallest_singer = this->singerTree->getSmallest();
+}
 
 }
 
 void SecondTreeNodeData::UpdateSmallest() {
-    this->smallest = this->songTree->getSmallest();
+  this->smallest_song = this->songTree->getSmallest();
+}
+
+void ThirdTreeNodeData::setOriginArtist(TreeNode<int,
+                                                 SecondTreeNodeData *> *new_origin_artist) {
+  if (new_origin_artist != nullptr) {
+    this->originArtist = new_origin_artist;
+  }
 }
