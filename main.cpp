@@ -70,15 +70,7 @@ int main() {
     NumberOfStreams(mivne,4,0,&a);
     Quit(&mivne);
 
-    AVLTree<int,int> numberTree();
-    numberTree.add(1,1);
-    numberTree().add(3,1);
-    numberTree().add(2,1);
-    numberTree().add(4,1);
-    numberTree().add(5,1);
-    numberTree().add(9,1);
-    numberTree().add(7,1);
-    InOrder(numberTree().getRoot());
+
 
 
     printf("great success");
