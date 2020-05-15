@@ -1,9 +1,9 @@
 #include <iostream>
 #include <stdbool.h>
 #include "AVLTree.h"
-#include "LinkedList.h"
 #include "MusicManager.h"
 #include <string>
+#include "library1.h"
 
 using std::string;
 
@@ -46,42 +46,45 @@ void Animal::printOwner() {
   std::cout << owner->name;
 }
 
-void InOrder(TreeNode<int, int> *node){
-    if(node== nullptr)
-        return;
-    InOrder(node->getLeftSon());
-    node->printKey();
-    InOrder(node->getRightSon());
+void InOrder(TreeNode<int, int> *node) {
+  if (node == nullptr)
+    return;
+  InOrder(node->getLeftSon());
+  node->printKey();
+  InOrder(node->getRightSon());
 }
 
 int main() {
-    void *mivne = Init();
-    MusicManager *ds = (MusicManager*)mivne;
-    AddArtist(mivne,1,10);
-    AddArtist(mivne,2,1);
-    AddArtist(mivne,3,2);
-    AddArtist(mivne,4,3);
-    AddArtist(mivne,5,4);
-    RemoveArtist(mivne,1);
-    RemoveArtist(mivne,2);
-    RemoveArtist(mivne,5);
+  void *music_manager = Init();
+  MusicManager *mm = (MusicManager *) music_manager;
+  int num = 5;
+  AddArtist(music_manager, 1, num);
 
-    int a=10;
-    NumberOfStreams(mivne,4,0,&a);
-    Quit(&mivne);
-
-    AVLTree<int,int> numberTree();
-    numberTree.add(1,1);
-    numberTree().add(3,1);
-    numberTree().add(2,1);
-    numberTree().add(4,1);
-    numberTree().add(5,1);
-    numberTree().add(9,1);
-    numberTree().add(7,1);
-    InOrder(numberTree().getRoot());
-
-
-    printf("great success");
-
-    return 0;
+  AddToSongCount(music_manager, 1, 0);
+  for (int i = 0; i < 5; ++i) {
+    AddToSongCount(music_manager, 1, 1);
+  }
+  for (int i = 0; i < 10; ++i) {
+    AddToSongCount(music_manager, 1, 2);
+  }
+  for (int i = 0; i < 15; ++i) {
+    AddToSongCount(music_manager, 1, 3);
+  }
+  for (int i = 0; i < 20; ++i) {
+    AddToSongCount(music_manager, 1, 4);
+  }
+  AddArtist(music_manager, 2, 1);
+  AddToSongCount(music_manager, 2, 0);
+  RemoveArtist(music_manager, 1);
+  AddToSongCount(music_manager, 2, 0);
+  AddToSongCount(music_manager, 2, 0);
+  AddToSongCount(music_manager, 2, 0);
+  AddToSongCount(music_manager, 2, 0);
+  AddToSongCount(music_manager, 2, 0);
+  RemoveArtist(music_manager, 1);
+  RemoveArtist(music_manager, 1);
+  RemoveArtist(music_manager, 1);
+  RemoveArtist(music_manager, 1);
+  RemoveArtist(music_manager, 2);
+  return 0;
 }
