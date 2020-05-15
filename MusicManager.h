@@ -177,10 +177,8 @@ public:
 
     SecondTreeNodeData(LinkedList<PlayCountNodeData *>::ListNode *originNode,
                        AVLTree<int, ThirdTreeNodeData *> *songTree,
-                       TreeNode<int, ThirdTreeNodeData *> *smallest) : originNode(
-            originNode), songTree(songTree),
-                                                                       smallest_song(
-                                                                               smallest_song) {};
+                       TreeNode<int, ThirdTreeNodeData *> *smallest) : originNode(originNode), songTree(songTree),
+                                                                       smallest_song(smallest_song) {};
 
     ~SecondTreeNodeData() = default;
 
