@@ -227,6 +227,8 @@ class AVLTree {
   TreeNode<Key, Data> *getSmallest();
 
   TreeNode<Key, Data> *getRoot();
+
+  bool isEmpty() const;
 };
 
 /*        IMPLEMENTATION        */
@@ -685,6 +687,14 @@ TreeNode<Key, Data> *AVLTree<Key, Data>::getSmallest() {
 template<class Key, class Data>
 TreeNode<Key, Data> *AVLTree<Key, Data>::getRoot() {
   return this->root;
+}
+
+template<class Key, class Data>
+bool AVLTree<Key, Data>::isEmpty() const {
+  if (this->root == nullptr) {
+    return true;
+  }
+  return false;
 }
 
 #endif //WET1__AVLTREE_H_
