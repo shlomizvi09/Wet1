@@ -554,7 +554,7 @@ AVLTreeResult AVLTree<Key, Data>::deleteTreeNode(TreeNode<Key,
                                                           Data> **tree_node) {
   TreeNode<Key, Data> *node_to_remove;
   if ((*tree_node)->leftSon == nullptr && (*tree_node)->rightSon == nullptr) {
-    if ((*tree_node)->parent != nullptr
+    if ((*tree_node)->parent != nullptr && (*tree_node)->parent->leftSon != nullptr
         && (*tree_node)->parent->leftSon->key == (*tree_node)->key) {
       (*tree_node)->parent->setLeftSon(nullptr);
     } else if ((*tree_node)->parent != nullptr) {
