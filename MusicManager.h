@@ -170,7 +170,7 @@ class SecondTreeNodeData {
 
  public:
   SecondTreeNodeData() : originNode(nullptr), songTree(nullptr),
-                         smallest_song(nullptr) {};
+                         smallest_song(nullptr){};
 
   SecondTreeNodeData(const SecondTreeNodeData &other)
       : originNode(other.originNode),
@@ -180,9 +180,7 @@ class SecondTreeNodeData {
   SecondTreeNodeData(LinkedList<PlayCountNodeData *>::ListNode *originNode,
                      AVLTree<int, ThirdTreeNodeData *> *songTree,
                      TreeNode<int, ThirdTreeNodeData *> *smallest) : originNode(
-      originNode), songTree(songTree),
-                                                                     smallest_song(
-                                                                         smallest_song) {};
+      originNode), songTree(songTree), smallest_song(smallest_song) {};
 
   ~SecondTreeNodeData() = default;
 
@@ -203,10 +201,10 @@ class ThirdTreeNodeData {
   friend class SecondTreeNodeData;
 
  public:
-  ThirdTreeNodeData() : originArtist(nullptr) {};
+  ThirdTreeNodeData() : originArtist(nullptr){};
 
   ThirdTreeNodeData(TreeNode<int, SecondTreeNodeData *> *origin) : originArtist(
-      origin) {};
+      origin){};
 
   ThirdTreeNodeData(const ThirdTreeNodeData &other) : originArtist(
       other.originArtist) {};
