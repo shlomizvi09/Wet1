@@ -99,8 +99,6 @@ void MusicManager::DeleteData(TreeNode<int, ThirdTreeNodeData *> *root,
 
 MusicManagerResult MusicManager::Quit() {
     LinkedList<PlayCountNodeData *>::ListNode *node1 = this->PlayCountList->getFirst();
-    TreeNode<int, SecondTreeNodeData *> *node2 = nullptr;
-
     while (node1->getNext()) {
         PatrolTree(node1->getData()->singerTree->getRoot(), nullptr);
         delete node1->getData();

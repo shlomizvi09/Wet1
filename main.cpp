@@ -1,7 +1,5 @@
 #include <iostream>
 #include <stdbool.h>
-#include "AVLTree.h"
-#include "MusicManager.h"
 #include <string>
 #include "library1.h"
 
@@ -49,17 +47,11 @@ void Animal::printOwner() {
     std::cout << owner->name;
 }
 
-void InOrder(TreeNode<int, int> *node) {
-    if (node == nullptr)
-        return;
-    InOrder(node->getLeftSon());
-    node->printKey();
-    InOrder(node->getRightSon());
-}
+
 
 int main() {
     void *music_manager = Init();
-    MusicManager *mm = (MusicManager *) music_manager;
+   // MusicManager *mm = (MusicManager *) music_manager;
     int num = 5;
     AddArtist(music_manager, 1, num);
 
