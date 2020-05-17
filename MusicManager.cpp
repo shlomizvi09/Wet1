@@ -53,15 +53,14 @@ MusicManagerResult MusicManager::RemoveArtist(int artistID) {
             continue;
         LinkedList<PlayCountNodeData *>::ListNode *playNode = node1->getData()->songs[i];
         TreeNode<int, SecondTreeNodeData *> *node2 = nullptr;
-        node1->getData()->songs[i]->getData()->singerTree->searchNode
-                (artistID, &node2);
+        playNode->getData()->singerTree->searchNode(artistID,&node2);
         if (node2 == nullptr)
             continue;
         this->DeleteData(node2->getData()->songTree->getRoot(), node1);
         node2->getData()->songTree->cleanTree(node2->getData()->songTree->getRoot());
         delete node2->getData();
         playNode->getData()->singerTree->remove(artistID);
-        if (playNode->getData()->singerTree->getRoot() == nullptr) {
+        if (playNode->getData()->singerTree->isEmpty()) {
             delete playNode->getData()->singerTree;
             delete playNode->getData();
             this->PlayCountList->deleteNode(playNode);
@@ -101,6 +100,7 @@ MusicManagerResult MusicManager::Quit() {
     LinkedList<PlayCountNodeData *>::ListNode *node1 = this->PlayCountList->getFirst();
     while (node1->getNext()) {
         PatrolTree(node1->getData()->singerTree->getRoot(), nullptr);
+        delete node1->getData()->singerTree;
         delete node1->getData();
         node1 = node1->getNext();
         this->PlayCountList->deleteNode(node1->getPrev());
