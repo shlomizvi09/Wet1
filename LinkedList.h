@@ -35,7 +35,7 @@ public:
     // insert new node to be the first node //
     ListNode *insertFirst(T data);
 
-    // remove node from the list //
+    // remove given node from the list //
     void deleteNode(ListNode *node);
 
     // prints the data of all the node from head to tail //
@@ -78,6 +78,7 @@ public:
     };
 
 private:
+    // the start and end of the list //
     ListNode *head;
     ListNode *tail;
 };
@@ -130,15 +131,6 @@ LinkedList<T>::insertInPlace(LinkedList::ListNode
     return newNode;
 }
 
-template<class T>
-void LinkedList<T>::printList() {
-    ListNode *iterator = this->head->getNext();
-    while (iterator->getNext()) {
-        std::cout << iterator->getData() << std::endl;
-        iterator = iterator->getNext();
-    }
-
-}
 
 template<class T>
 void LinkedList<T>::deleteNode(LinkedList::ListNode *node) {
