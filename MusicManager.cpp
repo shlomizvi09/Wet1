@@ -58,6 +58,7 @@ MusicManagerResult MusicManager::RemoveArtist(int artistID) {
             continue;
         this->DeleteData(node2->getData()->songTree->getRoot(), node1);
         node2->getData()->songTree->cleanTree(node2->getData()->songTree->getRoot());
+        delete node2->getData()->songTree;
         delete node2->getData();
         playNode->getData()->singerTree->remove(artistID);
         if (playNode->getData()->singerTree->isEmpty()) {
