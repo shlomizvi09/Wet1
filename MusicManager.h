@@ -76,16 +76,19 @@ public:
 
     void
     PatrolFromSmallestSong(TreeNode<int, ThirdTreeNodeData *> *node3, int numOfSongs, int *artists, int *songs, int
-    *counter,int size);
+    *counter, int size);
 
-    void PatrolFromSmallestSinger(TreeNode<int, SecondTreeNodeData *> *node2);
+    void PatrolFromSmallestSinger(TreeNode<int, SecondTreeNodeData *> *node2, int numOfSongs, int *artists, int
+    *songs, int *counter, int size);
+
+
 
 };
 
 class PlayCountNodeData {
     int plays;
     AVLTree<int, SecondTreeNodeData *> *singerTree;
-    TreeNode<int, class SecondTreeNodeData *> *smallest_singer;
+    TreeNode<int, SecondTreeNodeData *> *smallest_singer;
 
     friend class MusicManager;
 
@@ -99,12 +102,11 @@ public:
 
     PlayCountNodeData(int numOfPlays,
                       AVLTree<int, SecondTreeNodeData *> *singerTree,
-                      TreeNode<int, class SecondTreeNodeData *> *smallest) : plays
+                      TreeNode<int, class SecondTreeNodeData *> *smallest_singer) : plays
                                                                                      (numOfPlays),
                                                                              singerTree
                                                                                      (singerTree),
-                                                                             smallest_singer(
-                                                                                     smallest_singer) {};
+                                                                             smallest_singer(smallest_singer) {};
 
     /*PlayCountNodeData(const PlayCountNodeData &other) : plays(other.plays),
                                                         singerTree(other.singerTree),
@@ -186,7 +188,7 @@ public:
 
     SecondTreeNodeData(LinkedList<PlayCountNodeData *>::ListNode *originNode,
                        AVLTree<int, ThirdTreeNodeData *> *songTree,
-                       TreeNode<int, ThirdTreeNodeData *> *smallest) : originNode(
+                       TreeNode<int, ThirdTreeNodeData *> *smallest_song) : originNode(
             originNode), songTree(songTree),
                                                                        smallest_song(
                                                                                smallest_song) {};

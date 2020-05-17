@@ -67,7 +67,7 @@ MusicManagerResult MusicManager::RemoveArtist(int artistID) {
             this->PlayCountList->deleteNode(playNode);
             continue;
         }
-        playNode->getData()->smallest_singer = playNode->getData()->singerTree->getSmallest();
+        playNode->getData()->updateSmallest();
     }
     delete node1->getData();
     this->Tree1->remove(artistID);
@@ -99,8 +99,6 @@ void MusicManager::DeleteData(TreeNode<int, ThirdTreeNodeData *> *root,
 
 MusicManagerResult MusicManager::Quit() {
     LinkedList<PlayCountNodeData *>::ListNode *node1 = this->PlayCountList->getFirst();
-    TreeNode<int, SecondTreeNodeData *> *node2 = nullptr;
-
     while (node1->getNext()) {
         PatrolTree(node1->getData()->singerTree->getRoot(), nullptr);
         delete node1->getData();
@@ -140,11 +138,14 @@ void MusicManager::PatrolTree(TreeNode<int, SecondTreeNodeData *> *root,
 MusicManagerResult MusicManager::GetRecommendedSongs(int numOfSongs, int *artists, int *songs) {
     if (this->TotalSongs < numOfSongs)
         return MM_FAIL;
-    LinkedList<PlayCountNodeData *>::ListNode *playNode = nullptr;
+    LinkedList<PlayCountNodeData *>::ListNode *playNode = this->PlayCountList->getTail()->getPrev();
     int counter = 0;
     while (counter < numOfSongs) {
-
+        PatrolFromSmallestSinger(playNode->getData()->smallest_singer, numOfSongs, artists, songs, &counter,
+                                 playNode->getData()->singerTree->getSize());
+        playNode = playNode->getPrev();
     }
+    return MM_SUCCESS;
 }
 
 using std::bad_alloc;
@@ -244,10 +245,13 @@ MusicManagerResult MusicManager::AddToSongCount(int artistID, int songID) {
         }
     }
     second_tree_data->songTree->remove(songID);
+    second_tree_data->UpdateSmallest();
+    num_plays_list_data->updateSmallest();
     if (second_tree_data->songTree->isEmpty()) {
         delete second_tree_data->songTree;
         delete second_tree_data;
         num_plays_list_data->singerTree->remove(artistID);
+        num_plays_list_data->updateSmallest();
         if (num_plays_list_data->singerTree->isEmpty()) {
             delete num_plays_list_data->singerTree;
             delete num_plays_list_data;
@@ -277,9 +281,6 @@ void ThirdTreeNodeData::setOriginArtist(TreeNode<int,
     }
 }
 
-void MusicManager::PatrolFromSmallestSinger(TreeNode<int, SecondTreeNodeData *> *node2) {
-}
-
 void MusicManager::PatrolFromSmallestSong(TreeNode<int, ThirdTreeNodeData *> *node3, int numOfSongs, int *artists,
                                           int *songs, int *counter, int size) {
     int internalCounter = 0;
@@ -289,10 +290,10 @@ void MusicManager::PatrolFromSmallestSong(TreeNode<int, ThirdTreeNodeData *> *no
         artists[*counter] = node3->getData()->originArtist->getKey();
         (*counter)++;
         internalCounter++;
-        nodeFrom=node3;
-        node3=node3->getRightSon();
+        nodeFrom = node3;
+        node3 = node3->getRightSon();
     }
-    while (*counter < numOfSongs || internalCounter < size) {
+    while (*counter < numOfSongs && internalCounter < size) {
         if (nodeFrom == node3->getParent()) {
             if (node3->getLeftSon() != nullptr) {
                 nodeFrom = node3;
@@ -336,6 +337,64 @@ void MusicManager::PatrolFromSmallestSong(TreeNode<int, ThirdTreeNodeData *> *no
         } else if (nodeFrom == node3->getRightSon()) {
             nodeFrom = node3;
             node3 = node3->getParent();
+            continue;
+        }
+    }
+    return;
+}
+
+void MusicManager::PatrolFromSmallestSinger(TreeNode<int, SecondTreeNodeData *> *node2, int numOfSongs, int *artists,
+                                            int *songs, int
+                                            *counter, int size) {
+    int internalCounter = 0;
+    TreeNode<int, SecondTreeNodeData *> *nodeFrom = node2->getParent();
+    if (nodeFrom == nullptr) {
+        PatrolFromSmallestSong(node2->getData()->smallest_song, numOfSongs, artists, songs, counter,
+                               node2->getData()->songTree->getSize());
+        internalCounter++;
+        nodeFrom = node2;
+        node2 = node2->getRightSon();
+    }
+    while (*counter < numOfSongs && internalCounter < size) {
+        if (nodeFrom == node2->getParent()) {
+            if (node2->getLeftSon() != nullptr) {
+                nodeFrom = node2;
+                node2 = node2->getLeftSon();
+                continue;
+            } else if (node2->getLeftSon() == nullptr && node2->getRightSon() != nullptr) {
+                PatrolFromSmallestSong(node2->getData()->smallest_song, numOfSongs, artists, songs, counter,
+                                       node2->getData()->songTree->getSize());
+                internalCounter++;
+                nodeFrom = node2;
+                node2 = node2->getRightSon();
+                continue;
+            } else if (node2->getRightSon() == nullptr && node2->getLeftSon() == nullptr) {
+                PatrolFromSmallestSong(node2->getData()->smallest_song, numOfSongs, artists, songs, counter,
+                                       node2->getData()->songTree->getSize());
+                internalCounter++;
+                nodeFrom = node2;
+                node2 = node2->getParent();
+                continue;
+            }
+        } else if (nodeFrom == node2->getLeftSon()) {
+            if (node2->getRightSon() == nullptr) {
+                PatrolFromSmallestSong(node2->getData()->smallest_song, numOfSongs, artists, songs, counter,
+                                       node2->getData()->songTree->getSize());
+                internalCounter++;
+                nodeFrom = node2;
+                node2 = node2->getParent();
+                continue;
+            } else if (node2->getRightSon() != nullptr) {
+                PatrolFromSmallestSong(node2->getData()->smallest_song, numOfSongs, artists, songs, counter,
+                                       node2->getData()->songTree->getSize());
+                internalCounter++;
+                nodeFrom = node2;
+                node2 = node2->getRightSon();
+                continue;
+            }
+        } else if (nodeFrom == node2->getRightSon()) {
+            nodeFrom = node2;
+            node2 = node2->getParent();
             continue;
         }
     }

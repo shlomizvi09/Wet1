@@ -1,7 +1,5 @@
 #include <iostream>
 #include <stdbool.h>
-#include "AVLTree.h"
-#include "MusicManager.h"
 #include <string>
 #include "library1.h"
 
@@ -49,17 +47,11 @@ void Animal::printOwner() {
     std::cout << owner->name;
 }
 
-void InOrder(TreeNode<int, int> *node) {
-    if (node == nullptr)
-        return;
-    InOrder(node->getLeftSon());
-    node->printKey();
-    InOrder(node->getRightSon());
-}
+
 
 int main() {
     void *music_manager = Init();
-    MusicManager *mm = (MusicManager *) music_manager;
+   // MusicManager *mm = (MusicManager *) music_manager;
     int num = 5;
     AddArtist(music_manager, 1, num);
 
@@ -76,19 +68,33 @@ int main() {
     for (int i = 0; i < 20; ++i) {
         AddToSongCount(music_manager, 1, 4);
     }
-    AddArtist(music_manager, 2, 1);
-    AddArtist(music_manager, 4, 1);
-    AddArtist(music_manager, 5, 1);
-    AddArtist(music_manager, 8, 1);
-    AddArtist(music_manager, 9, 1);
+    AddArtist(music_manager, 3, 10);
+    AddArtist(music_manager, 2, 10);
+    AddArtist(music_manager, 5, 10);
+    AddArtist(music_manager, 8, 10);
+    AddArtist(music_manager, 9, 10);
 
     AddToSongCount(music_manager, 2, 0);
     RemoveArtist(music_manager, 1);
-    AddToSongCount(music_manager, 2, 0);
-    AddToSongCount(music_manager, 2, 0);
-    AddToSongCount(music_manager, 2, 0);
-    AddToSongCount(music_manager, 2, 0);
-    AddToSongCount(music_manager, 2, 0);
+    AddToSongCount(music_manager, 2, 6);
+    AddToSongCount(music_manager, 3, 6);
+    AddToSongCount(music_manager, 3, 6);
+    AddToSongCount(music_manager, 3, 5);
+    AddToSongCount(music_manager, 8, 3);
+    AddToSongCount(music_manager, 9, 4);
+    AddToSongCount(music_manager, 9, 4);
+    AddToSongCount(music_manager, 9, 3);
+    AddToSongCount(music_manager, 2, 3);
+    AddToSongCount(music_manager, 9, 2);
+    AddToSongCount(music_manager, 5, 2);
+    AddToSongCount(music_manager, 5, 2);
+    AddToSongCount(music_manager, 3, 1);
+
+
+    int artist[3];
+    int songs[3];
+
+    GetRecommendedSongs(music_manager,3,artist,songs);
     RemoveArtist(music_manager, 2);
     RemoveArtist(music_manager, 4);
     RemoveArtist(music_manager, 5);
