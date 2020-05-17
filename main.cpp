@@ -51,8 +51,13 @@ void Animal::printOwner() {
 
 int main() {
     void *music_manager = Init();
-   // MusicManager *mm = (MusicManager *) music_manager;
-    int num = 5;
+    AddArtist(music_manager, 1, 1);
+    AddArtist(music_manager, 2, 1);
+    AddArtist(music_manager, 3, 1);
+    AddArtist(music_manager, 4, 1);
+
+    // MusicManager *mm = (MusicManager *) music_manager;
+/*    int num = 5;
     AddArtist(music_manager, 1, num);
 
     AddToSongCount(music_manager, 1, 0);
@@ -68,6 +73,7 @@ int main() {
     for (int i = 0; i < 20; ++i) {
         AddToSongCount(music_manager, 1, 4);
     }
+    RemoveArtist(music_manager,1);
     AddArtist(music_manager, 3, 10);
     AddArtist(music_manager, 2, 10);
     AddArtist(music_manager, 5, 10);
@@ -100,6 +106,6 @@ int main() {
     RemoveArtist(music_manager, 5);
     RemoveArtist(music_manager, 8);
     RemoveArtist(music_manager, 9);
-    Quit(&music_manager);
+  */  Quit(&music_manager);
     return 0;
 }

@@ -57,7 +57,7 @@ public:
               rightSon(old_tree_node.rightSon),
               leftSon(old_tree_node.leftSon) {}
 
-    ~TreeNode() = default;
+    ~TreeNode() ;
 
     TreeNode *getParent() const;
 
@@ -240,6 +240,11 @@ public:
     int getSize();
 
 };
+
+template<class Key, class Data>
+TreeNode<Key, Data>::~TreeNode() {
+    printf("deleted \n");
+}
 
 /*        IMPLEMENTATION        */
 
