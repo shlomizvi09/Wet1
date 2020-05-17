@@ -265,8 +265,12 @@ void AVLTree<Key, Data>::cleanTree(TreeNode<Key, Data> *tree_node) {
     tree_node->setParent(nullptr);
     tree_node->setRightSon(nullptr);
     tree_node->setLeftSon(nullptr);
-    delete tree_node;
-    this->root = nullptr;
+    if (this->root == tree_node) {
+        delete tree_node;
+        this->root = nullptr;
+    } else {
+        delete tree_node;
+    }
 }
 
 template<class Key, class Data>
@@ -714,7 +718,7 @@ bool AVLTree<Key, Data>::isEmpty() const {
 }
 
 template<class Key, class Data>
-int AVLTree<Key,Data>::getSize() {
+int AVLTree<Key, Data>::getSize() {
     return this->size;
 }
 
