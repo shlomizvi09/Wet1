@@ -6,57 +6,55 @@
 using std::string;
 
 class Person {
-public:
-    string name;
-    int age;
+ public:
+  string name;
+  int age;
 
-    friend class Animal;
+  friend class Animal;
 
-    Person() : name(""), age(0) {}
+  Person() : name(""), age(0) {}
 
-    Person(string name, int age) : name(name), age(age) {}
+  Person(string name, int age) : name(name), age(age) {}
 
-    Person(const Person &Old) : name(Old.name), age(Old.age) {}
+  Person(const Person &Old) : name(Old.name), age(Old.age) {}
 
-    ~Person() {
-        std::cout << "error";
-    }
+  ~Person() {
+    std::cout << "error";
+  }
 
-    friend std::ostream &operator<<(std::ostream &os, const Person &other);
+  friend std::ostream &operator<<(std::ostream &os, const Person &other);
 };
 
 std::ostream &operator<<(std::ostream &os, const Person &other) {
-    os << "name: " << other.name << "\n" << "age: " << other.age << " ";
-    return os;
+  os << "name: " << other.name << "\n" << "age: " << other.age << " ";
+  return os;
 }
 
 class Animal {
-    Person *owner;
-public:
-    Animal(Person *owner) : owner(owner) {}
+  Person *owner;
+ public:
+  Animal(Person *owner) : owner(owner) {}
 
-    ~Animal() {
+  ~Animal() {
 
-    }
+  }
 
-    void printOwner();
+  void printOwner();
 
 };
 
 void Animal::printOwner() {
-    std::cout << owner->name;
+  std::cout << owner->name;
 }
 
-
-
 int main() {
-    void *music_manager = Init();
-    AddArtist(music_manager, 1, 1);
-    AddArtist(music_manager, 2, 1);
-    AddArtist(music_manager, 3, 1);
-    AddArtist(music_manager, 4, 1);
+  void *music_manager = Init();
+  AddArtist(music_manager, 1, 1);
+  AddArtist(music_manager, 2, 1);
+  AddArtist(music_manager, 3, 1);
+  AddArtist(music_manager, 4, 1);
 
-    // MusicManager *mm = (MusicManager *) music_manager;
+  // MusicManager *mm = (MusicManager *) music_manager;
 /*    int num = 5;
     AddArtist(music_manager, 1, num);
 
@@ -106,6 +104,7 @@ int main() {
     RemoveArtist(music_manager, 5);
     RemoveArtist(music_manager, 8);
     RemoveArtist(music_manager, 9);
-  */  Quit(&music_manager);
-    return 0;
+    */
+  Quit(&music_manager);
+  return 0;
 }
