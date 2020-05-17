@@ -315,7 +315,7 @@ void MusicManager::PatrolFromSmallestSong(TreeNode<int, ThirdTreeNodeData *> *no
                 node3 = node3->getParent();
                 continue;
             }
-        } else if (nodeFrom = node3->getLeftSon()) {
+        } else if (nodeFrom == node3->getLeftSon()) {
             if (node3->getRightSon() == nullptr) {
                 songs[*counter] = node3->getKey();
                 artists[*counter] = node3->getData()->originArtist->getKey();
