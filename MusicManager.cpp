@@ -48,6 +48,7 @@ MusicManagerResult MusicManager::RemoveArtist(int artistID) {
     if (this->Tree1->searchNode(artistID, &node1) == AVL_KeyNotFound) {
         return MM_NOT_EXISTS;
     }
+    this->TotalSongs-=node1->getData()->numOfSongs;
     for (int i = 0; i < node1->getData()->numOfSongs; ++i) {
         if (node1->getData()->songs[i] == nullptr)
             continue;
@@ -106,6 +107,7 @@ MusicManagerResult MusicManager::Quit() {
         node1 = node1->getNext();
         this->PlayCountList->deleteNode(node1->getPrev());
     }
+    this->PlayCountList->deleteNode(node1->getPrev());
     this->DeleteMainTree(this->Tree1->getRoot());
     this->Tree1->cleanTree(this->Tree1->getRoot());
     return MM_SUCCESS;

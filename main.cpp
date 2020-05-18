@@ -52,8 +52,8 @@ int main() {
     void *music_manager = Init();
     MusicManager *ds = (MusicManager*)music_manager;
     AddArtist(music_manager, 1, 10);
-    int artist[9];
-    int songs[9];
+    int artist[10];
+    int songs[10];
     AddToSongCount(music_manager, 1, 9);
     AddToSongCount(music_manager, 1, 8);
     AddToSongCount(music_manager, 1, 1);
@@ -61,7 +61,7 @@ int main() {
     AddToSongCount(music_manager, 1, 5);
 
 
-    GetRecommendedSongs(music_manager, 19, artist, songs);
+    GetRecommendedSongs(music_manager, 10, artist, songs);
 
     // MusicManager *mm = (MusicManager *) music_manager;
 /*    int num = 5;
