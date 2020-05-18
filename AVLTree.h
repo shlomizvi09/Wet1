@@ -571,14 +571,14 @@ AVLTreeResult AVLTree<Key, Data>::deleteTreeNode(TreeNode<Key,
   TreeNode<Key, Data> *parent_of_deleted_node = (tree_node->parent);
   Key curr_key = tree_node->getKey();
   if (tree_node->leftSon == nullptr && tree_node->rightSon == nullptr) {
-    *tree_node_ptr = nullptr;
-    delete node_to_remove;
     if (parent_of_deleted_node != nullptr && parent_of_deleted_node->getLeftSon() != nullptr
         && parent_of_deleted_node->getLeftSon()->key == curr_key) {
       parent_of_deleted_node->setLeftSon(nullptr);
     } else if (parent_of_deleted_node != nullptr) {
       parent_of_deleted_node->setRightSon(nullptr);
     }
+    *tree_node_ptr = nullptr;
+    delete node_to_remove;
   } else if (tree_node->getLeftSon() != nullptr
       && tree_node->getRightSon() == nullptr) {
     tree_node->getLeftSon()->setParent(parent_of_deleted_node);
