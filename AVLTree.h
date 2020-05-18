@@ -422,9 +422,9 @@ void AVLTree<Key, Data>::swapBetweenNodes(TreeNode<Key, Data> *first_node,
   }
 
   if (this->root->key == first_node->key) {
-    this->setRoot(first_node);
-  } else if (this->root->key == second_node->key) {
     this->setRoot(second_node);
+  } else if (this->root->key == second_node->key) {
+    this->setRoot(first_node);
   }
 
 }

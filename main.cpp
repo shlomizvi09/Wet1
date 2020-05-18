@@ -51,17 +51,52 @@ void Animal::printOwner() {
 int main() {
     void *music_manager = Init();
     MusicManager *ds = (MusicManager*)music_manager;
-    AddArtist(music_manager, 1, 10);
+    AddArtist(music_manager, 1, 5);
+    AddArtist(music_manager, 2, 5);
+    AddArtist(music_manager, 3, 5);
+
     int artist[10];
     int songs[10];
-    AddToSongCount(music_manager, 1, 9);
-    AddToSongCount(music_manager, 1, 8);
+    AddToSongCount(music_manager, 1, 0);
     AddToSongCount(music_manager, 1, 1);
-    AddToSongCount(music_manager, 1, 4);
-    AddToSongCount(music_manager, 1, 5);
+    AddToSongCount(music_manager, 1, 2);
+    AddToSongCount(music_manager, 1, 3);
+
+    AddToSongCount(music_manager, 1, 0);
+    AddToSongCount(music_manager, 1, 1);
+    AddToSongCount(music_manager, 1, 2);
+    AddToSongCount(music_manager, 1, 3);
+
+    AddToSongCount(music_manager, 1, 0);
+    AddToSongCount(music_manager, 1, 1);
+    AddToSongCount(music_manager, 1, 2);
 
 
-    GetRecommendedSongs(music_manager, 10, artist, songs);
+    AddToSongCount(music_manager, 2, 0);
+    AddToSongCount(music_manager, 2, 1);
+    AddToSongCount(music_manager, 2, 2);
+    AddToSongCount(music_manager, 2, 3);
+
+    AddToSongCount(music_manager, 2, 0);
+    AddToSongCount(music_manager, 2, 1);
+    AddToSongCount(music_manager, 2, 2);
+
+    AddToSongCount(music_manager, 2, 0);
+    AddToSongCount(music_manager, 2, 1);
+
+    GetRecommendedSongs(music_manager,10,artist,songs);
+
+    RemoveArtist(music_manager,1);
+
+    GetRecommendedSongs(music_manager,10,artist,songs);
+
+    AddToSongCount(music_manager, 3, 0);
+    AddToSongCount(music_manager, 3, 1);
+    AddToSongCount(music_manager, 3, 2);
+
+    AddToSongCount(music_manager, 3, 0);
+
+    GetRecommendedSongs(music_manager,10,artist,songs);
 
     // MusicManager *mm = (MusicManager *) music_manager;
 /*    int num = 5;

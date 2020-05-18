@@ -133,7 +133,9 @@ public:
     PlayCountNodeData(int plays) : plays(plays), singerTree(nullptr), smallest_singer(nullptr) {}
 
     // default destructor //
-    ~PlayCountNodeData() = default;
+    ~PlayCountNodeData() {
+     //   printf("play_node_data_delete\n");
+    }
 
     // when called, updates the smallest singer in the type 2 tree //
     void updateSmallest();
@@ -167,6 +169,8 @@ public:
     // destructor //
     ~FirstTreeNodeData() {
         delete[] songs;
+     //   printf("first_node_data_delete\n");
+
     }
 };
 
@@ -203,7 +207,10 @@ public:
                                                                                     smallest_song) {};
 
     // default destructor //
-    ~SecondTreeNodeData() = default;
+    ~SecondTreeNodeData(){
+     //   printf("second_node_data_delete\n");
+
+    }
 
     // changes his origin node to be *new_originNode //
     void setOriginNode(LinkedList<PlayCountNodeData *>::ListNode *new_originNode);
@@ -231,7 +238,10 @@ public:
     ThirdTreeNodeData(const ThirdTreeNodeData &other) : originArtist(
             other.originArtist) {};
 
-    ~ThirdTreeNodeData() = default;
+    ~ThirdTreeNodeData(){
+        printf("third_node_data_delete\n");
+
+    }
 
     void setOriginArtist(TreeNode<int,
             SecondTreeNodeData *> *new_origin_artist);

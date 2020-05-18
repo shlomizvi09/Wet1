@@ -137,6 +137,7 @@ void LinkedList<T>::deleteNode(LinkedList::ListNode *node) {
     if (node == tail || node == head)
         return;
     node->removeNode();
+    delete node;
 
 }
 
@@ -144,8 +145,8 @@ template<class T>
 typename LinkedList<T>::ListNode *
 LinkedList<T>::insertFirst(T
 data) {
-    ListNode *newNode = new ListNode();
-    newNode->changeData(data);
+    ListNode *newNode = new ListNode(data);
+  //  newNode->changeData(data);
     newNode->setPrev(this->head);
     newNode->setNext(this->head->getNext());
     newNode->getNext()->setPrev(newNode);
@@ -191,7 +192,6 @@ template<class T>
 void LinkedList<T>::ListNode::removeNode() {
     this->getPrev()->setNext(this->getNext());
     this->getNext()->setPrev(this->getPrev());
-    delete this;
 }
 
 template<class T>
