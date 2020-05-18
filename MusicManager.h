@@ -239,7 +239,7 @@ public:
             other.originArtist) {};
 
     ~ThirdTreeNodeData(){
-        printf("third_node_data_delete\n");
+     //   printf("third_node_data_delete\n");
 
     }
 
